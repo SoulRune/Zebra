@@ -463,6 +463,11 @@ NSString *const ZBUserEndedScreenCaptureNotification = @"EndedScreenCaptureNotif
 - (void)_configureErrorReporting {
 #if !DEBUG
 #ifdef SENTRY_DSN
+    // Don’t init Sentry when people sideload Zebra (for some reason)
+    if (![[NSBundle mainBundle].bundleIdentifier isEqualToString:@PRODUCT_BUNDLE_IDENTIFIER]) {
+        return;
+    }
+
     static SentryEvent *eventPendingReport = nil;
     [SentrySDK startWithConfigureOptions:^(SentryOptions *options) {
         options.dsn = SENTRY_DSN;

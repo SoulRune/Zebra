@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -1070,6 +1070,7 @@
 				BuildIndependentTargetsInParallel = YES;
 				CLASSPREFIX = ZB;
 				LastUpgradeCheck = 2640;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "Zebra Team";
 				TargetAttributes = {
 					89C5FDDC21B1B13700A10E58 = {
@@ -1462,6 +1463,7 @@
 					"PACKAGE_VERSION='\"$(MARKETING_VERSION)\"'",
 					"INSTALL_PREFIX='\"$(INSTALL_PREFIX)\"'",
 					"DEB_ARCH='\"$(DEB_ARCH)\"'",
+					"PRODUCT_BUNDLE_IDENTIFIER='\"$(PRODUCT_BUNDLE_IDENTIFIER)\"'",
 					"$(inherited)",
 				);
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -1571,6 +1573,7 @@
 					"PACKAGE_VERSION='\"$(MARKETING_VERSION)\"'",
 					"INSTALL_PREFIX='\"$(INSTALL_PREFIX)\"'",
 					"DEB_ARCH='\"$(DEB_ARCH)\"'",
+					"PRODUCT_BUNDLE_IDENTIFIER='\"$(PRODUCT_BUNDLE_IDENTIFIER)\"'",
 					"$(inherited)",
 				);
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -1746,6 +1749,7 @@
 					"PACKAGE_VERSION='\"$(MARKETING_VERSION)\"'",
 					"INSTALL_PREFIX='\"$(INSTALL_PREFIX)\"'",
 					"DEB_ARCH='\"$(DEB_ARCH)\"'",
+					"PRODUCT_BUNDLE_IDENTIFIER='\"$(PRODUCT_BUNDLE_IDENTIFIER)\"'",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Zebra/Info.plist;
@@ -1790,6 +1794,7 @@
 					"PACKAGE_VERSION='\"$(MARKETING_VERSION)\"'",
 					"INSTALL_PREFIX='\"$(INSTALL_PREFIX)\"'",
 					"DEB_ARCH='\"$(DEB_ARCH)\"'",
+					"PRODUCT_BUNDLE_IDENTIFIER='\"$(PRODUCT_BUNDLE_IDENTIFIER)\"'",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Zebra/Info.plist;
