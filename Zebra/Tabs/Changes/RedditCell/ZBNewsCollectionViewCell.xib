@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -41,6 +38,7 @@
                     </label>
                 </subviews>
             </view>
+            <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
             <constraints>
                 <constraint firstItem="FyV-vV-2Vh" firstAttribute="trailing" secondItem="nf2-VJ-jmQ" secondAttribute="trailing" id="4TT-Ez-30G"/>
                 <constraint firstAttribute="trailing" secondItem="BdK-iu-sXC" secondAttribute="trailing" id="COj-tp-RT6"/>
@@ -54,14 +52,13 @@
                 <constraint firstItem="nf2-VJ-jmQ" firstAttribute="top" secondItem="FyV-vV-2Vh" secondAttribute="bottom" constant="8" symbolic="YES" id="qtl-tB-HlE"/>
                 <constraint firstItem="FyV-vV-2Vh" firstAttribute="centerX" secondItem="BdK-iu-sXC" secondAttribute="centerX" id="z9Q-Ez-cEz"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
             <size key="customSize" width="294" height="132"/>
             <connections>
                 <outlet property="backgroundImage" destination="BdK-iu-sXC" id="BXZ-Cx-i5Z"/>
                 <outlet property="postTag" destination="FyV-vV-2Vh" id="tpE-bs-0Jl"/>
                 <outlet property="postTitle" destination="nf2-VJ-jmQ" id="ZY6-pN-6zr"/>
             </connections>
-            <point key="canvasLocation" x="146.5" y="93"/>
+            <point key="canvasLocation" x="234.40000000000001" y="83.658170914542737"/>
         </collectionViewCell>
     </objects>
 </document>
