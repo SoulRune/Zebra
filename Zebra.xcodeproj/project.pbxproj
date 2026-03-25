@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 53;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -34,7 +34,6 @@
 		4E2E6BE4281FC4080089E4FB /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 4E2E6BE3281FC4080089E4FB /* SDWebImage */; };
 		4E2E6BFA2820E5CF0089E4FB /* LNPopupController-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 4E2E6BF92820E5CF0089E4FB /* LNPopupController-Static */; };
 		4E2E6BFD2820FBCF0089E4FB /* ZBPaymentVendorError.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E2E6BFC2820FBCF0089E4FB /* ZBPaymentVendorError.m */; };
-		4E2E6C0028216A4D0089E4FB /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 4E2E6BFF28216A4D0089E4FB /* Sentry */; };
 		4E2E6C042826734B0089E4FB /* ZBLabelTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E2E6C032826734B0089E4FB /* ZBLabelTextView.m */; };
 		4E413922278D98DC0006AB8B /* ZBAlternateIconCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E413921278D98DC0006AB8B /* ZBAlternateIconCell.m */; };
 		4E41394A278DC8F90006AB8B /* listicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E413941278DC8F90006AB8B /* listicon.png */; };
@@ -52,6 +51,7 @@
 		4E58162E28D60DB700EEF97F /* ZBHomeDemoNoticeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E58162D28D60DB700EEF97F /* ZBHomeDemoNoticeCell.m */; };
 		4E5F8274274FAFE40074A0BC /* NSObject+Zebra.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5F8273274FAFE40074A0BC /* NSObject+Zebra.m */; };
 		4E873D4F2838C7F600737732 /* NSURLSession+Zebra.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E873D4E2838C7F600737732 /* NSURLSession+Zebra.m */; };
+		4E90226D2F741F1800827C72 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 4E90226C2F741F1800827C72 /* Sentry */; };
 		4E9FC84C278EA57100934FFE /* ZBChangelogEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E9FC84B278EA57100934FFE /* ZBChangelogEntryCell.m */; };
 		4EA26E9727CBA3190019A5AA /* ZBHomeCopyableFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA26E9627CBA3190019A5AA /* ZBHomeCopyableFooterView.m */; };
 		4EC7F26927AE34E00078F953 /* ZBCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EC7F26827AE34E00078F953 /* ZBCommand.m */; };
@@ -417,7 +417,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4E2E6C0028216A4D0089E4FB /* Sentry in Frameworks */,
+				4E90226D2F741F1800827C72 /* Sentry in Frameworks */,
 				899784402242D25800C1138C /* libbz2.tbd in Frameworks */,
 				895071992239E414004AE338 /* libMobileGestalt.tbd in Frameworks */,
 				4E2E6BE4281FC4080089E4FB /* SDWebImage in Frameworks */,
@@ -1055,7 +1055,7 @@
 			packageProductDependencies = (
 				4E2E6BE3281FC4080089E4FB /* SDWebImage */,
 				4E2E6BF92820E5CF0089E4FB /* LNPopupController-Static */,
-				4E2E6BFF28216A4D0089E4FB /* Sentry */,
+				4E90226C2F741F1800827C72 /* Sentry */,
 			);
 			productName = Zebra;
 			productReference = 89C5FDDD21B1B13700A10E58 /* Zebra.app */;
@@ -1130,7 +1130,7 @@
 			packageReferences = (
 				4E2E6BE2281FC4080089E4FB /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				4E2E6BF82820E5CF0089E4FB /* XCRemoteSwiftPackageReference "LNPopupController" */,
-				4E2E6BFE28216A4D0089E4FB /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
+				4E90226B2F741F1800827C72 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 			);
 			productRefGroup = 89C5FDDE21B1B13700A10E58 /* Products */;
 			projectDirPath = "";
@@ -1846,12 +1846,14 @@
 /* Begin XCRemoteSwiftPackageReference section */
 		4E2E6BE2281FC4080089E4FB /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SDWebImage/SDWebImage";
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 5.0.0;
 				kind = exactVersion;
 				version = 5.19.4;
+				kind = exactVersion;
+				version = 5.20.1;
 			};
 		};
 		4E2E6BF82820E5CF0089E4FB /* XCRemoteSwiftPackageReference "LNPopupController" */ = {
@@ -1862,12 +1864,12 @@
 				kind = branch;
 			};
 		};
-		4E2E6BFE28216A4D0089E4FB /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
+		4E90226B2F741F1800827C72 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/getsentry/sentry-cocoa";
+			repositoryURL = "https://github.com/getsentry/sentry-cocoa.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.0.0;
+				kind = exactVersion;
+				version = 7.31.5;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1883,9 +1885,9 @@
 			package = 4E2E6BF82820E5CF0089E4FB /* XCRemoteSwiftPackageReference "LNPopupController" */;
 			productName = "LNPopupController-Static";
 		};
-		4E2E6BFF28216A4D0089E4FB /* Sentry */ = {
+		4E90226C2F741F1800827C72 /* Sentry */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4E2E6BFE28216A4D0089E4FB /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			package = 4E90226B2F741F1800827C72 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
 			productName = Sentry;
 		};
 /* End XCSwiftPackageProductDependency section */

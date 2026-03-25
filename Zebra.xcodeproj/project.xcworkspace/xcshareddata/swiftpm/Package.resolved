@@ -14,14 +14,14 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDWebImage/SDWebImage",
       "state" : {
-        "revision" : "3289629ef6cbf1ad8c3d1dccf0cf09ac97547cd6",
-        "version" : "5.15.7"
+        "revision" : "e7d3256c497af9330a0df866ee38f544ddd87c49",
+        "version" : "5.20.1"
       }
     },
     {
       "identity" : "sentry-cocoa",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/getsentry/sentry-cocoa",
+      "location" : "https://github.com/getsentry/sentry-cocoa.git",
       "state" : {
         "revision" : "cf43eac1aa12017868c257ad3854ad87a5de0758",
         "version" : "7.31.5"
