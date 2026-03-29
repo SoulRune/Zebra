@@ -245,16 +245,20 @@ typedef NS_ENUM(NSUInteger, ZBPackageInfoOrder) {
     if (package == nil) {
         return;
     }
-    [self performSelector:@selector(layoutDepictionWebView:) withObject:webView afterDelay:1.0];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self layoutDepictionWebView:webView];
+        [self performSelector:@selector(layoutDepictionWebView:) withObject:webView afterDelay:1.0];
+    });
 }
 
 - (void)layoutDepictionWebView:(WKWebView *)webView {
-    [webView evaluateJavaScript:@"document.readyState" completionHandler:^(id _Nullable completed, NSError * _Nullable error) {
-        if ([completed isEqualToString:@"complete"]) {
-            NSString *question = @"var body = document.body, html = document.documentElement; Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.offsetHeight)";
-            [webView evaluateJavaScript:question completionHandler:^(id _Nullable height, NSError * _Nullable error) {
-                [self layoutDepictionWebView:webView height:[height floatValue]];
-            }];
+    [webView evaluateJavaScript:@"var body = document.body, html = document.documentElement; [document.readyState, Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.offsetHeight)]" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+        NSString *readyState = result[0];
+        NSNumber *height = result[1];
+
+        if ([readyState isEqualToString:@"complete"]) {
+            [self layoutDepictionWebView:webView height:[height doubleValue]];
         }
     }];
 }
