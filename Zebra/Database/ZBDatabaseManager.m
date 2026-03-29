@@ -2089,10 +2089,12 @@
         }
 
         NSString *query = [NSString stringWithFormat:@"SELECT * FROM PACKAGES "
-                           @"WHERE REPOID NOT IN (-1, 0, %@) AND ICONURL IS NOT NULL AND %@ "
+                           @"WHERE REPOID NOT IN (-1, 0) AND REPOID NOT IN (%@) AND ICONURL IS NOT NULL AND %@ "
                            @"ORDER BY RANDOM() "
                            @"LIMIT %d",
-                           [sourceTemplates componentsJoinedByString:@","], self._installablePackageArchitectureClause, limit];
+                           [sourceTemplates componentsJoinedByString:@","],
+                           self._installablePackageArchitectureClause,
+                           limit];
 
         sqlite3_stmt *statement = NULL;
         if (sqlite3_prepare_v2(database, [query UTF8String], -1, &statement, nil) == SQLITE_OK) {
