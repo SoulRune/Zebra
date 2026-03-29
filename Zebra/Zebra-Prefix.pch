@@ -1,0 +1,15 @@
+//
+//  Zebra-Prefix.pch
+//  Zebra
+//
+//  Created by Adam Demasi on 25/3/2026.
+//  Copyright © 2026 Zebra Team. All rights reserved.
+//
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_15_0
+    #define ROOTLESS
+#endif
+
+#if __has_include("Sentry/SentrySDK.h")
+    #define SENTRY
+#endif

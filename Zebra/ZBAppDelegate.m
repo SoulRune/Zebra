@@ -31,7 +31,9 @@
 #import "ZebraKeys.private.h"
 #endif
 
+#if SENTRY
 @import Sentry;
+#endif
 
 @interface ZBAppDelegate () {
     NSString *forwardToPackageID;
@@ -461,7 +463,7 @@ NSString *const ZBUserEndedScreenCaptureNotification = @"EndedScreenCaptureNotif
 #pragma mark - Error Reporting
 
 - (void)_configureErrorReporting {
-#if !DEBUG
+#if SENTRY && !DEBUG
 #ifdef SENTRY_DSN
     // Don’t init Sentry when people sideload Zebra (for some reason)
     if (![[NSBundle mainBundle].bundleIdentifier isEqualToString:@PRODUCT_BUNDLE_IDENTIFIER]) {

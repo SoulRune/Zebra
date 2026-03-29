@@ -214,6 +214,7 @@
 		4E5F8273274FAFE40074A0BC /* NSObject+Zebra.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Zebra.m"; sourceTree = "<group>"; };
 		4E873D4D2838C7F600737732 /* NSURLSession+Zebra.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSURLSession+Zebra.h"; sourceTree = "<group>"; };
 		4E873D4E2838C7F600737732 /* NSURLSession+Zebra.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSURLSession+Zebra.m"; sourceTree = "<group>"; };
+		4E90226A2F73A9B200827C72 /* Zebra-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Zebra-Prefix.pch"; sourceTree = "<group>"; };
 		4E9FC846278E675500934FFE /* ZBLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZBLog.h; sourceTree = "<group>"; };
 		4E9FC84A278EA57100934FFE /* ZBChangelogEntryCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZBChangelogEntryCell.h; sourceTree = "<group>"; };
 		4E9FC84B278EA57100934FFE /* ZBChangelogEntryCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZBChangelogEntryCell.m; sourceTree = "<group>"; };
@@ -868,6 +869,7 @@
 				896F11C921B236AC0017B581 /* Simulator Resources */,
 				89FEBC1B22C293E100B58662 /* Tabs */,
 				897FFD5223CFA4FA0082DD31 /* Theme */,
+				4E90226A2F73A9B200827C72 /* Zebra-Prefix.pch */,
 				89C5FDE921B1B13800A10E58 /* Assets.xcassets */,
 				89C5FDE621B1B13700A10E58 /* Main.storyboard */,
 				89C5FDEB21B1B13800A10E58 /* LaunchScreen.storyboard */,
@@ -1459,6 +1461,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				GCC_PREFIX_HEADER = "Zebra/Zebra-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"PACKAGE_VERSION='\"$(MARKETING_VERSION)\"'",
 					"INSTALL_PREFIX='\"$(INSTALL_PREFIX)\"'",
@@ -1569,6 +1572,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				GCC_PREFIX_HEADER = "Zebra/Zebra-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"PACKAGE_VERSION='\"$(MARKETING_VERSION)\"'",
 					"INSTALL_PREFIX='\"$(INSTALL_PREFIX)\"'",
@@ -1745,6 +1749,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				GCC_PREFIX_HEADER = "Zebra/Zebra-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"PACKAGE_VERSION='\"$(MARKETING_VERSION)\"'",
 					"INSTALL_PREFIX='\"$(INSTALL_PREFIX)\"'",
@@ -1790,6 +1795,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				GCC_PREFIX_HEADER = "Zebra/Zebra-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"PACKAGE_VERSION='\"$(MARKETING_VERSION)\"'",
 					"INSTALL_PREFIX='\"$(INSTALL_PREFIX)\"'",

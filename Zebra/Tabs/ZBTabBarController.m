@@ -24,7 +24,10 @@
 #import "ZBSettingsErrorReportingViewController.h"
 
 @import LNPopupController;
+
+#if SENTRY
 @import Sentry;
+#endif
 
 @interface ZBTabBarController () {
     NSMutableArray *errorMessages;

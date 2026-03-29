@@ -60,7 +60,7 @@
         // Nil selected icon means the default icon is currently active.
         BOOL isSelected = [item[@"iconName"] isEqualToString:selectedIconName ?: @"AppIcon"];
         BOOL border = [item[@"border"] boolValue];
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_15_0
+#ifdef ROOTLESS
         NSString *iconName = item[@"iconName"];
         if ([iconName isEqualToString:@"AppIcon"]) {
             iconName = @"AppIcon60x60";
