@@ -278,7 +278,9 @@ typedef void (^ZBPaymentVendorCompletionHandler)(NSHTTPURLResponse *response, id
                 self.source.supportsGETPackageInfo = NO;
                 [self getInfoForPackage:packageID completion:completion];
             } else {
-                completion(nil, error);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(nil, error);
+                });
             }
             return;
         }
@@ -290,11 +292,16 @@ typedef void (^ZBPaymentVendorCompletionHandler)(NSHTTPURLResponse *response, id
                 self.source.supportsGETPackageInfo = NO;
                 [self getInfoForPackage:packageID completion:completion];
             } else {
-                completion(nil, error);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(nil, error);
+                });
             }
             return;
         }
-        completion(info, nil);
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(info, nil);
+        });
     }] resume];
 }
 

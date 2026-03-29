@@ -661,7 +661,7 @@
         if ([components count] == 2) {
             // No URL passed in. Just present the prompt.
             [self showAddSourceAlert:nil];
-        } else if ([components count] >= 3) {
+        } else if ([components count] >= 3 && [components[1] isEqualToString:@"add"]) {
             // URL passed in. Try and parse a valid URL out of it, and do our best to display the
             // prompt with it. If we can’t parse out a valid URL, we’ll display the prompt anyway
             // with no URL prefilled.

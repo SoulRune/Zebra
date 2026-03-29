@@ -361,7 +361,8 @@
     }
     
     BOOL archiveTypeEqual = [[object archiveType] isEqualToString:[self archiveType]];
-    BOOL repositoryURIEqual = [[object repositoryURI] hasSuffix:repositoryURISchemeless ?: self.repositoryURI];
+    NSString *myRepositoryURI = repositoryURISchemeless ?: self.repositoryURI;
+    BOOL repositoryURIEqual = myRepositoryURI && [[object repositoryURI] hasSuffix:myRepositoryURI];
     if (repositoryURIEqual && [self hasCFVersionComponent:self.repositoryURI]) {
         return YES;
     }
