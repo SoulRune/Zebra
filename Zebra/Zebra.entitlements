@@ -62,5 +62,7 @@
 		<true/>
 		<key>com.apple.private.xpc.persona-manager</key>
 		<true/>
+		<key>com.apple.webkit-client</key>
+		<true/>
 	</dict>
 </plist>
