@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ZBQueueViewController : ZBTableViewController
 - (id)init;
 - (void)refreshTable;
-@property (nonatomic, weak) UISheetPresentationController *sheetController;
+@property (nonatomic, weak) UISheetPresentationController *sheetController API_AVAILABLE(ios(15.0));
 @end
 
 NS_ASSUME_NONNULL_END

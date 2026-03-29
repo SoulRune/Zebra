@@ -309,8 +309,11 @@ typedef NS_ENUM(NSUInteger, ZBPackageInfoOrder) {
     navButtonsBeingConfigured = YES;
 
     if ([self presented]) {
-        UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemClose target:self action:@selector(goodbye)];
-        self.navigationItem.leftBarButtonItem = closeButton;
+        if (@available(iOS 13, *)) {
+            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemClose target:self action:@selector(goodbye)];
+        } else {
+            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStylePlain target:self action:@selector(goodbye)];
+        }
     }
 
     [ZBPackageActions barButtonItemForPackage:package completion:^(UIBarButtonItem *barButton) {
