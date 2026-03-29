@@ -264,12 +264,16 @@
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSession zbra_downloadSession].configuration];
 
     for (NSString *extension in @[@"xz", @"bz2", @"gz", @"lzma", @""]) {
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[[packagesDirectoryURL URLByAppendingPathComponent:@"Packages"] URLByAppendingPathExtension:extension] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
+        NSURL *testURL = [[packagesDirectoryURL URLByAppendingPathComponent:@"Packages"] URLByAppendingPathExtension:extension];
+        NSLog(@"[ZBBaseSource] Probing %@", testURL);
+
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:testURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
         [request setHTTPMethod:@"HEAD"];
 
         NSURLSessionDataTask *task = [[NSURLSession zbra_downloadSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
             if (httpResponse.statusCode == 200 && [self isNonBlacklistedMIMEType:httpResponse.MIMEType]) {
+                NSLog(@"[ZBBaseSource] Valid source found");
                 [session invalidateAndCancel];
 
                 self->verificationStatus = ZBSourceExists;
@@ -278,6 +282,7 @@
             else if (--tasks == 0) {
                 self->verificationStatus = ZBSourceImaginary;
                 self->_verificationError = error ?: [ZBDownloadManager errorForHTTPStatusCode:httpResponse.statusCode forFile:nil];
+                NSLog(@"[ZBBaseSource] Source is imaginary: %@", self->_verificationError);
                 if (completion) completion(self->verificationStatus);
             }
         }];
