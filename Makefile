@@ -41,5 +41,14 @@ include $(THEOS_MAKE_PATH)/aggregate.mk
 ipa:
 	+$(MAKE) PACKAGE_FORMAT=ipa package
 
+after-stage::
+	@# Remove unnecessary files
+	rm -r $(THEOS_STAGING_DIR)$(THEOS_PACKAGE_INSTALL_PREFIX)/Applications/Zebra.app/SDWebImage_SDWebImage.bundle
+	@# TODO: Fix /var/jb/var/jb/
+ifeq ($(ROOTLESS),1)
+	mv $(THEOS_STAGING_DIR)$(THEOS_PACKAGE_INSTALL_PREFIX)/* $(THEOS_STAGING_DIR)/
+	rm -r $(THEOS_STAGING_DIR)$(THEOS_PACKAGE_INSTALL_PREFIX)
+endif
+
 after-install::
 	install.exec 'uiopen zbra:'
