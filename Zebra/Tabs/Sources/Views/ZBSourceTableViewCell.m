@@ -20,8 +20,6 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    self.iconImageView.cornerRadius = 10;
-    self.iconImageView.layer.masksToBounds = YES;
     self.chevronView = (UIImageView *)(self.accessoryView);
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:12];
     spinner.color = [UIColor grayColor];

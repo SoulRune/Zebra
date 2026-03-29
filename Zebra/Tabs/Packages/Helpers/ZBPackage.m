@@ -22,6 +22,7 @@
 #import "ZBSettings.h"
 #import "ZBCommand.h"
 #import "ZBSafariAuthenticationSession.h"
+#import "UIImageView+Zebra.h"
 
 @import SDWebImage;
 
@@ -636,13 +637,15 @@
     return essential || [[priority lowercaseString] isEqualToString:@"required"];
 }
 
-- (void)setIconImageForImageView:(UIImageView *)imageView {
+- (void)setIconImageForImageView:(UIImageView *)imageView variant:(MIIconVariant)variant {
     UIImage *sectionImage = [ZBSource imageForSection:self.section];
     if (self.iconPath) {
-        [imageView sd_setImageWithURL:[NSURL URLWithString:self.iconPath] placeholderImage:sectionImage];
+        [imageView sd_setImageWithURL:[NSURL URLWithString:self.iconPath] placeholderImage:sectionImage completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            [imageView setIconImage:image variant:variant];
+        }];
     }
     else {
-        [imageView setImage:sectionImage];
+        [imageView setIconImage:sectionImage variant:variant];
     }
 }
 

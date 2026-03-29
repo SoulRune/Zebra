@@ -219,13 +219,20 @@
 - (void)configureSegmentedController {
     // FIXME: On iOS 10, navigating back from Package Depiction page to Packages page makes the segmented control at the top left for a brief amount of time
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSMutableArray *items = [@[NSLocalizedString(@"ABC", @""), NSLocalizedString(@"Date", @""), NSLocalizedString(@"Size", @"")] mutableCopy];
-        if (self->source.sourceID)
-            [items removeLastObject];
-        UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:items];
-        segmentedControl.selectedSegmentIndex = self->selectedSortingType;
-        [segmentedControl addTarget:self action:@selector(segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
-        self.navigationItem.titleView = segmentedControl;
+        // TODO: Clean up architecture to not recreate the segmented control when it changes
+        if (![self.navigationItem.titleView isKindOfClass:[UISegmentedControl class]]) {
+            NSMutableArray *items = [@[NSLocalizedString(@"ABC", @""), NSLocalizedString(@"Date", @""), NSLocalizedString(@"Size", @"")] mutableCopy];
+            if (self->source.sourceID)
+                [items removeLastObject];
+            UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:items];
+            [segmentedControl addTarget:self action:@selector(segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+            self.navigationItem.titleView = segmentedControl;
+        }
+
+        UISegmentedControl *segmentedControl = (UISegmentedControl *)self.navigationItem.titleView;
+        if (segmentedControl.selectedSegmentIndex != self->selectedSortingType) {
+            segmentedControl.selectedSegmentIndex = self->selectedSortingType;
+        }
     });
 }
 

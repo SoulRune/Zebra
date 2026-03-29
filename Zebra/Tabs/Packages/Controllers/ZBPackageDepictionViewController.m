@@ -368,7 +368,7 @@ typedef NS_ENUM(NSUInteger, ZBPackageInfoOrder) {
     self.packageName.textColor = [UIColor primaryTextColor];
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        [package setIconImageForImageView:self.packageIcon];
+        [package setIconImageForImageView:self.packageIcon variant:MIIconVariantDefault];
     });
 }
 

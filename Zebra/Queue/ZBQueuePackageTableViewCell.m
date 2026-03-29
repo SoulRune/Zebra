@@ -7,7 +7,6 @@
 //
 
 #import "ZBQueuePackageTableViewCell.h"
-#import "UIView+Zebra.h"
 
 @implementation ZBQueuePackageTableViewCell {
     UIImageView *imageView;
@@ -22,7 +21,6 @@
         self->imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
         self->imageView.translatesAutoresizingMaskIntoConstraints = false;
         self->imageView.contentMode = UIViewContentModeScaleAspectFit;
-        self->imageView.cornerRadius = 10;
 
         self->titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         self->titleLabel.translatesAutoresizingMaskIntoConstraints = false;
@@ -73,7 +71,7 @@
         self.accessoryType = UITableViewCellAccessoryNone;
     }
     
-    [package setIconImageForImageView:self->imageView];
+    [package setIconImageForImageView:self->imageView variant:MIIconVariantSettings];
     
     self->titleLabel.text = package.name;
     self->versionLabel.text = [NSString stringWithFormat:@"%@ (%@)", package.identifier, package.version];

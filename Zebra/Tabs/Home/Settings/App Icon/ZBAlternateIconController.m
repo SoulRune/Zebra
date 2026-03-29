@@ -26,13 +26,11 @@
             @"icons": @[
                     @{
                         @"name": @"Light",
-                        @"iconName": @"AppIcon",
-                        @"border": @YES
+                        @"iconName": @"AppIcon"
                     },
                     @{
                         @"name": @"Dark",
-                        @"iconName": @"originalBlack",
-                        @"border": @NO
+                        @"iconName": @"originalBlack"
                     }
             ]
         },
@@ -42,8 +40,7 @@
             @"icons": @[
                     @{
                         @"name": @"Light",
-                        @"iconName": @"AUPM",
-                        @"border": @YES
+                        @"iconName": @"AUPM"
                     }
             ]
         },
@@ -53,13 +50,11 @@
             @"icons": @[
                     @{
                         @"name": @"Light",
-                        @"iconName": @"alphastream-light",
-                        @"border": @NO
+                        @"iconName": @"alphastream-light"
                     },
                     @{
                         @"name": @"Dark",
-                        @"iconName": @"alphastream-dark",
-                        @"border": @NO
+                        @"iconName": @"alphastream-dark"
                     }
             ]
         },
@@ -69,13 +64,11 @@
             @"icons": @[
                     @{
                         @"name": @"Light",
-                        @"iconName": @"lightZebraSkin",
-                        @"border": @NO
+                        @"iconName": @"lightZebraSkin"
                     },
                     @{
                         @"name": @"Dark",
-                        @"iconName": @"darkZebraSkin",
-                        @"border": @NO
+                        @"iconName": @"darkZebraSkin"
                     }
             ]
         },
@@ -85,13 +78,11 @@
             @"icons": @[
                     @{
                         @"name": @"Light",
-                        @"iconName": @"zWhite",
-                        @"border": @NO
+                        @"iconName": @"zWhite"
                     },
                     @{
                         @"name": @"Dark",
-                        @"iconName": @"zBlack",
-                        @"border": @NO
+                        @"iconName": @"zBlack"
                     }
             ]
         }

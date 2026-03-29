@@ -29,7 +29,7 @@
     self.isInstalledImageView.hidden = !package.isInstalled;
     self.contentView.alpha = package.isArchitectureCompatible ? 1 : 0.5;
     
-    [package setIconImageForImageView:self.packageIconImageView];
+    [package setIconImageForImageView:self.packageIconImageView variant:MIIconVariantDefault];
 }
 
 - (void)setColors {

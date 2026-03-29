@@ -20,6 +20,7 @@
 #import "ZBPaymentVendor.h"
 #import "ZBDatabaseManager.h"
 #import "ZBPackageActions.h"
+#import "UIImageView+Zebra.h"
 
 @import SDWebImage;
 
@@ -175,8 +176,10 @@
                 cell.urlLabel.text = [source sourceDescription];
                 cell.urlLabel.textColor = [UIColor secondaryTextColor];
                 
-                [cell.iconImageView sd_setImageWithURL:[source iconURL] placeholderImage:[UIImage imageNamed:@"Unknown"]];
-                
+                [cell.iconImageView sd_setImageWithURL:[source iconURL] placeholderImage:[UIImage imageNamed:@"Unknown"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                    [cell.iconImageView setIconImage:image variant:MIIconVariantSettings];
+                }];
+
                 cell.accessoryType = UITableViewCellAccessoryNone;
                 
                 return cell;

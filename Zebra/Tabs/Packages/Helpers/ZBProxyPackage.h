@@ -11,6 +11,7 @@
 
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
+#import "MobileIcons.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -33,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isArchitectureCompatible;
 - (BOOL)isInstalled;
 - (ZBPackage *)loadPackage;
-- (void)setIconImageForImageView:(UIImageView *)imageView;
+- (void)setIconImageForImageView:(UIImageView *)imageView variant:(MIIconVariant)variant;
 @end
 
 NS_ASSUME_NONNULL_END

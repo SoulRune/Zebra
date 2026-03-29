@@ -89,7 +89,7 @@
     [imageView sd_setImageWithURL:[source iconURL] placeholderImage:[UIImage imageNamed:@"Unknown"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (image && !error) {
-                imageView.image = image;
+                [imageView setIconImage:image variant:MIIconVariantSettings];
             }
             else {
                 self.navigationItem.titleView = nil;
@@ -305,8 +305,7 @@
         cell.textLabel.text = NSLocalizedString(section, @"");
         
         cell.detailTextLabel.text = [numberFormatter stringFromNumber:(NSNumber *)[sectionReadout objectForKey:section]];
-        cell.imageView.image = [ZBSource imageForSection:section];
-        [cell.imageView resize:CGSizeMake(32, 32) applyRadius:YES];
+        [cell.imageView setIconImage:[ZBSource imageForSection:section] variant:MIIconVariantSettings];
     }
     return cell;
 }

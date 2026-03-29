@@ -17,17 +17,8 @@
     self.label.font = self.textLabel.font;
 }
 
-- (void)setAppIcon:(UIImage *)icon border:(BOOL)border {
-    self.iconView.image = icon;
-    
-    [self.iconView resize:CGSizeMake(30, 30) applyRadius:YES];
-    
-    if (border) {
-        [self.iconView applyBorder];
-    }
-    else {
-        [self.iconView removeBorder];
-    }
+- (void)setAppIcon:(UIImage *)icon {
+    [self.iconView setIconImage:icon variant:MIIconVariantSettings];
 }
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MobileIcons.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeBorder;
 - (void)setColor:(UIColor *)color;
 - (void)setLeftColor:(UIColor *)leftColor rightColor:(UIColor *)rightColor;
+- (void)setIconImage:(UIImage *)image variant:(MIIconVariant)variant;
 - (void)resize:(CGSize)size applyRadius:(BOOL)radius;
 
 @end

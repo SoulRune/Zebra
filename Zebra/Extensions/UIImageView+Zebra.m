@@ -9,6 +9,7 @@
 #import "UIColor+GlobalColors.h"
 #import "UIImageView+Zebra.h"
 #import "UIView+Private.h"
+#import "UIImage+Private.h"
 
 @implementation UIImageView (Zebra)
 
@@ -78,10 +79,39 @@
     self.clipsToBounds = YES;
 }
 
+- (void)setIconImage:(UIImage *)image variant:(MIIconVariant)variant {
+    CGFloat size = 0;
+    switch (variant) {
+    case MIIconVariantSpotlight:
+        size = 40;
+        break;
+    case MIIconVariantDefault:
+        size = 60;
+        break;
+    case MIIconVariantSettings:
+        size = 29;
+        break;
+    }
+
+    UIScreen *screen = self.window.screen ?: [UIScreen mainScreen];
+    CGSize scaledSize = CGSizeMake(size * screen.scale, size * screen.scale);
+
+    if (!CGSizeEqualToSize(image.size, scaledSize)) {
+        UIGraphicsBeginImageContextWithOptions(scaledSize, NO, screen.scale);
+        CGRect rect = CGRectMake(0, 0, scaledSize.width, scaledSize.height);
+        [image drawInRect:rect];
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    }
+
+    self.image = [image _applicationIconImageForFormat:variant precomposed:YES scale:screen.scale];
+}
+
 - (void)resize:(CGSize)size applyRadius:(BOOL)radius {
-    UIGraphicsBeginImageContextWithOptions(size, NO, UIScreen.mainScreen.scale);
-    
-    CGRect rect = CGRectMake(0.0, 0.0, size.width, size.height);
+    UIScreen *screen = self.window.screen ?: [UIScreen mainScreen];
+    UIGraphicsBeginImageContextWithOptions(size, NO, screen.scale);
+
+    CGRect rect = CGRectMake(0, 0, size.width, size.height);
     [self.image drawInRect:rect];
     
     self.image = UIGraphicsGetImageFromCurrentImageContext();
@@ -91,7 +121,7 @@
         self.layer.cornerRadius = 0.2237 * size.width;
         if (@available(iOS 13, *)) {
             self.layer.cornerCurve = kCACornerCurveContinuous;
-        } else {
+        } else if (@available(iOS 11, *)) {
             self._continuousCornerRadius = self.layer.cornerRadius;
         }
         self.clipsToBounds = YES;

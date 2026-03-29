@@ -21,6 +21,7 @@
 #import "ZBHomeDemoNoticeCell.h"
 #import "NSURLSession+Zebra.h"
 #import "ZBCanisterPrivacyViewController.h"
+#import "UIImageView+Zebra.h"
 
 typedef enum ZBHomeOrder : NSUInteger {
     ZBWelcome,
@@ -391,8 +392,7 @@ typedef enum ZBInfoOrder : NSUInteger {
                     break;
             }
             [cell.textLabel setText:text];
-            [cell.imageView setImage:image];
-            [self setImageSize:cell.imageView];
+            [cell.imageView setIconImage:image variant:MIIconVariantSettings];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.textColor = [UIColor primaryTextColor];
             [cell.textLabel sizeToFit];
@@ -429,8 +429,7 @@ typedef enum ZBInfoOrder : NSUInteger {
                     break;
             }
             [cell.textLabel setText:text];
-            [cell.imageView setImage:image];
-            [self setImageSize:cell.imageView];
+            [cell.imageView setIconImage:image variant:MIIconVariantSettings];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.textColor = [UIColor primaryTextColor];
             [cell.textLabel sizeToFit];
@@ -459,8 +458,7 @@ typedef enum ZBInfoOrder : NSUInteger {
                 break;
             }
             [cell.textLabel setText:text];
-            [cell.imageView setImage:image];
-            [self setImageSize:cell.imageView];
+            [cell.imageView setIconImage:image variant:MIIconVariantSettings];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.textColor = [UIColor primaryTextColor];
             [cell.textLabel sizeToFit];
@@ -505,17 +503,6 @@ typedef enum ZBInfoOrder : NSUInteger {
         return [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"infoFooter"];
     }
     return NULL;
-}
-
-- (void)setImageSize:(UIImageView *)imageView {
-    CGSize itemSize = CGSizeMake(29, 29);
-    UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
-    CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-    [imageView.image drawInRect:imageRect];
-    imageView.image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    [imageView.layer setCornerRadius:7];
-    [imageView setClipsToBounds:YES];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

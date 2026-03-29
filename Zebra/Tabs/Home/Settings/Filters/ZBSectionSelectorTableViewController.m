@@ -93,9 +93,8 @@
     
     cell.textLabel.text = sections[indexPath.row];
     cell.textLabel.textColor = [UIColor primaryTextColor];
-    
-    cell.imageView.image = [ZBSource imageForSection:sections[indexPath.row]];
-    [cell.imageView resize:CGSizeMake(32, 32) applyRadius:YES];
+
+    [cell.imageView setIconImage:[ZBSource imageForSection:sections[indexPath.row]] variant:MIIconVariantSettings];
     
     cell.accessoryType = [selectedIndexes containsObject:indexPath] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     

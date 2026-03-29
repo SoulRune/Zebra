@@ -12,6 +12,7 @@
 #import "ZBDatabaseManager.h"
 #import "ZBSource.h"
 #import "ZBDevice.h"
+#import "UIImageView+Zebra.h"
 
 @import SDWebImage;
 
@@ -71,13 +72,15 @@
     return [self.identifier isEqualToString:package.identifier];
 }
 
-- (void)setIconImageForImageView:(UIImageView *)imageView {
+- (void)setIconImageForImageView:(UIImageView *)imageView variant:(MIIconVariant)variant {
     UIImage *sectionImage = [ZBSource imageForSection:self.section];
     if (self.iconURL) {
-        [imageView sd_setImageWithURL:self.iconURL placeholderImage:sectionImage];
+        [imageView sd_setImageWithURL:self.iconURL placeholderImage:sectionImage completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            [imageView setIconImage:image variant:variant];
+        }];
     }
     else {
-        [imageView setImage:sectionImage];
+        [imageView setIconImage:sectionImage variant:variant];
     }
 }
 

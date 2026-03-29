@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
+#import "MobileIcons.h"
 
 @class UIImageView;
 @class ZBSource;
@@ -81,7 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)hasIssues;
 - (BOOL)isEssentialOrRequired;
 - (NSArray * _Nullable)possibleActions;
-- (void)setIconImageForImageView:(UIImageView *)imageView;
+- (void)setIconImageForImageView:(UIImageView *)imageView variant:(MIIconVariant)variant;
 
 #pragma mark - Modern Payment API
 - (BOOL)mightRequirePayment;

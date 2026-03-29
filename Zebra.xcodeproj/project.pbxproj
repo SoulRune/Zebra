@@ -231,6 +231,7 @@
 		4ECB1DF42948C9FD0049FE08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4EFE27B62F71035100913E39 /* UIView+Zebra.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Zebra.h"; sourceTree = "<group>"; };
 		4EFE27B72F71035100913E39 /* UIView+Zebra.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Zebra.m"; sourceTree = "<group>"; };
+		4EFE27B92F714C2800913E39 /* MobileIcons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MobileIcons.h; sourceTree = "<group>"; };
 		7821AF6D2275F3A4006C0315 /* ZBAddSourceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZBAddSourceViewController.m; sourceTree = "<group>"; };
 		7821AF6E2275F3A4006C0315 /* ZBAddSourceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBAddSourceViewController.h; sourceTree = "<group>"; };
 		8900FA4E2201E9C200476310 /* ZBQueueViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZBQueueViewController.h; sourceTree = "<group>"; };
@@ -659,6 +660,7 @@
 		8958F28E23C3C56800FB64D9 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				4EFE27B92F714C2800913E39 /* MobileIcons.h */,
 				9ECE3B9222D9C32F00F48A0E /* UITabBarItem.h */,
 				895071972239E2FD004AE338 /* MobileGestalt.h */,
 				A59E32832434E7DE00077D6E /* AccessibilityUtilities.h */,

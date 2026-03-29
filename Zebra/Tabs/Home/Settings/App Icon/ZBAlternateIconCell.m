@@ -59,7 +59,6 @@
     for (NSDictionary <NSString *, id> *item in iconSet[@"icons"]) {
         // Nil selected icon means the default icon is currently active.
         BOOL isSelected = [item[@"iconName"] isEqualToString:selectedIconName ?: @"AppIcon"];
-        BOOL border = [item[@"border"] boolValue];
 #ifdef ROOTLESS
         NSString *iconName = item[@"iconName"];
         if ([iconName isEqualToString:@"AppIcon"]) {
@@ -77,12 +76,8 @@
         button.accessibilityTraits = isSelected ? UIAccessibilityTraitSelected : kNilOptions;
         button.userInteractionEnabled = !isSelected;
         button.tag = i;
-        [button setImage:image forState:UIControlStateNormal];
+        [button.imageView setIconImage:image variant:MIIconVariantDefault];
         [button addTarget:self action:@selector(iconTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [button.imageView resize:CGSizeMake(60, 60) applyRadius:YES];
-        if (border) {
-            [button.imageView applyBorder];
-        }
         if (isSelected) {
             UIImageView *tickImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"selection-tick"]];
             tickImageView.translatesAutoresizingMaskIntoConstraints = NO;

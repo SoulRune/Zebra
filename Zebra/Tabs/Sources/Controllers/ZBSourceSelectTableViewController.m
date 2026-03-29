@@ -13,6 +13,7 @@
 #import "ZBSource.h"
 #import "UIColor+GlobalColors.h"
 #import "ZBDevice.h"
+#import "UIImageView+Zebra.h"
 
 @interface ZBSourceSelectTableViewController () {
     NSMutableArray <ZBSource *>    *selectedSources;
@@ -132,7 +133,9 @@
     cell.urlLabel.text = [source repositoryURI];
     cell.urlLabel.textColor = [UIColor secondaryTextColor];
 
-    [cell.iconImageView sd_setImageWithURL:[source iconURL] placeholderImage:[UIImage imageNamed:@"Unknown"]];
+    [cell.iconImageView sd_setImageWithURL:[source iconURL] placeholderImage:[UIImage imageNamed:@"Unknown"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        [cell.iconImageView setIconImage:image variant:MIIconVariantSettings];
+    }];
 
     cell.accessoryType = UITableViewCellAccessoryNone;
     switch (selectionType) {

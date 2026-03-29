@@ -167,7 +167,7 @@ enum ZBMiscOrder {
             NSString *iconName = [icon[@"iconName"] stringByAppendingString:@"60x60"];
 #endif
             UIImage *iconImage = [[UIImage imageNamed:iconName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-            [cell setAppIcon:iconImage border:[[icon objectForKey:@"border"] boolValue]];
+            [cell setAppIcon:iconImage];
             
             return cell;
         }

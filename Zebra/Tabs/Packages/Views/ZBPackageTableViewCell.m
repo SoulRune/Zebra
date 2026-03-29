@@ -53,7 +53,7 @@
         [info addObject:installedSize];
     self.authorAndSourceAndSize.text = [info componentsJoinedByString:@" • "];
     
-    [package setIconImageForImageView:self.iconImageView];
+    [package setIconImageForImageView:self.iconImageView variant:MIIconVariantDefault];
     
     BOOL installed = [package isInstalled:NO];
     BOOL paid = [package isPaid];

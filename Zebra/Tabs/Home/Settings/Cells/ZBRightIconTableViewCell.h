@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ZBRightIconTableViewCell : UITableViewCell
 @property (strong, nonatomic) IBOutlet UIImageView *iconView;
 @property (strong, nonatomic) IBOutlet UILabel *label;
-- (void)setAppIcon:(UIImage *)icon border:(BOOL)border;
+- (void)setAppIcon:(UIImage *)icon;
 @end
 
 NS_ASSUME_NONNULL_END

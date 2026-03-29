@@ -130,9 +130,8 @@
                 cell.textLabel.text = filteredSections[indexPath.row];
                 cell.textLabel.textColor = [UIColor primaryTextColor];
 
-                cell.imageView.image = [ZBSource imageForSection:filteredSections[indexPath.row]];
-                [cell.imageView resize:CGSizeMake(32, 32) applyRadius:YES];
-                
+                [cell.imageView setIconImage:[ZBSource imageForSection:filteredSections[indexPath.row]] variant:MIIconVariantSettings];
+
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
                 return cell;
@@ -151,8 +150,10 @@
                 sourceCell.urlLabel.text = numberOfSections == 1 ? NSLocalizedString(@"1 Section Hidden", @"") : [NSString stringWithFormat:NSLocalizedString(@"%lu Sections Hidden", @""), numberOfSections];
                 sourceCell.urlLabel.textColor = [UIColor secondaryTextColor];
                 
-                [sourceCell.iconImageView sd_setImageWithURL:[source iconURL] placeholderImage:[UIImage imageNamed:@"Unknown"]];
-                
+                [sourceCell.iconImageView sd_setImageWithURL:[source iconURL] placeholderImage:[UIImage imageNamed:@"Unknown"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                    [sourceCell.iconImageView setIconImage:image variant:MIIconVariantSettings];
+                }];
+
                 return sourceCell;
             }
             break;

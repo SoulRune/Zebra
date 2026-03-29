@@ -18,6 +18,7 @@
 #import "ZBSource.h"
 #import "ZBSourceImportTableViewController.h"
 #import "NSURLSession+Zebra.h"
+#import "UIImageView+Zebra.h"
 
 @interface ZBCommunitySourcesTableViewController () {
     NSArray <NSDictionary *> *communitySourceCache;
@@ -324,7 +325,9 @@
     cell.urlLabel.textColor = [UIColor secondaryTextColor];
 
     NSURL *iconURL = [NSURL URLWithString:info[@"icon"]];
-    [cell.iconImageView sd_setImageWithURL:iconURL placeholderImage:[UIImage imageNamed:@"Unknown"]];
+    [cell.iconImageView sd_setImageWithURL:iconURL placeholderImage:[UIImage imageNamed:@"Unknown"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        [cell.iconImageView setIconImage:image variant:MIIconVariantSettings];
+    }];
 
     [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
 

@@ -9,8 +9,7 @@
 #ifndef UIImage_Private_h
 #define UIImage_Private_h
 
-#define MIIconVariant NSUInteger
-#define MIIconVariantHomeScreen 8
+#include "MobileIcons.h"
 
 @interface UIImage (Private)
 - (instancetype)_flatImageWithColor:(UIColor *)color;

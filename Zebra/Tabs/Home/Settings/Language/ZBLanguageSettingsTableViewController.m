@@ -11,6 +11,7 @@
 #import "ZBDevice.h"
 #import "ZBSettings.h"
 #import "UIColor+GlobalColors.h"
+#import "UIImageView+Zebra.h"
 
 @interface ZBLanguageSettingsTableViewController () {
     BOOL useSystemLanguage;
@@ -173,7 +174,7 @@
     }
     else {
         cell.textLabel.text = NSLocalizedString(@"Help translate Zebra!", @"");
-        cell.imageView.image = [UIImage imageNamed:@"Translations"];
+        [cell.imageView setIconImage:[UIImage imageNamed:@"Translations"] variant:MIIconVariantSpotlight];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.detailTextLabel.text = nil;
         
