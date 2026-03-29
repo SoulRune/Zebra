@@ -261,6 +261,10 @@ typedef NS_ENUM(NSUInteger, ZBPackageInfoOrder) {
 
 - (void)layoutDepictionWebView:(WKWebView *)webView height:(CGFloat)height {
     dispatch_async(dispatch_get_main_queue(), ^{
+        if (webView.frame.size.height == height) {
+            return;
+        }
+
         CGRect frame = webView.frame;
         frame.size.height = height;
         webView.frame = frame;
