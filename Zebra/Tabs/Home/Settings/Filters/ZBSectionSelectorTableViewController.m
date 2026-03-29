@@ -13,6 +13,7 @@
 #import "UIImageView+Zebra.h"
 #import "UIColor+GlobalColors.h"
 #import "ZBSource.h"
+#import "ZBDevice.h"
 
 @interface ZBSectionSelectorTableViewController () {
     NSArray *sections;
@@ -26,7 +27,7 @@
 #pragma mark - View Controller Lifecycle
 
 - (id)init {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super initWithStyle:[ZBDevice tableViewStyle]];
     
     if (self) {
         selectedSections = [NSMutableArray new];

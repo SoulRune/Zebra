@@ -29,7 +29,7 @@
 @implementation ZBCommunitySourcesTableViewController
 
 - (id)init {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super initWithStyle:[ZBDevice tableViewStyle]];
 
     if (self) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(populateSources) name:@"ZBDatabaseCompletedUpdate" object:nil];

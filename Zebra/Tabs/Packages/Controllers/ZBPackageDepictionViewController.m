@@ -174,9 +174,15 @@ typedef NS_ENUM(NSUInteger, ZBPackageInfoOrder) {
         [longDescription replaceOccurrencesOfString:@"<"      withString:@"&lt;"  options:kNilOptions range:NSMakeRange(0, longDescription.length)];
         [longDescription replaceOccurrencesOfString:@">"      withString:@"&gt;"  options:kNilOptions range:NSMakeRange(0, longDescription.length)];
 
+        NSString *marginX = @"20px";
+        if (@available(iOS 13, *)) {
+            marginX = @"15px";
+        }
+
         NSString *css = [NSString stringWithFormat:
-                         @"body { margin: 15px 20px; font: -apple-system-body; background: transparent; color: %@; white-space: pre-line; }"
+                         @"body { margin: 15px %@; font: -apple-system-body; background: transparent; color: %@; white-space: pre-line; }"
                          @"a { color: %@; }",
+                         marginX,
                          [UIColor hexStringFromColor:[UIColor primaryTextColor]],
                          [UIColor hexStringFromColor:[UIColor accentColor]]];
         NSString *html = [NSString stringWithFormat:

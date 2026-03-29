@@ -13,6 +13,7 @@
 #import "ZBDatabaseManager.h"
 #import "UIImageView+Zebra.h"
 #import "UIColor+GlobalColors.h"
+#import "ZBDevice.h"
 
 @interface ZBAuthorSelectorTableViewController () {
     ZBDatabaseManager *databaseManager;
@@ -30,7 +31,7 @@
 #pragma mark - View Controller Lifecycle
 
 - (id)init {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super initWithStyle:[ZBDevice tableViewStyle]];
     
     if (self) {
         authors = @[];

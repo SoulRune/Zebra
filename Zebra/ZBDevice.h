@@ -97,8 +97,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)exitZebraAfter:(int)seconds;
 
 + (BOOL)darkModeEnabled; //Only provided for legacy tweak support
-
 + (BOOL)buttonShapesEnabled;
++ (UITableViewStyle)tableViewStyle;
 
 @end
 

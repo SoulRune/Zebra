@@ -29,7 +29,7 @@
 @synthesize options;
 
 - (id)initWithOptions:(NSArray *)selectionOptions getter:(SEL)getter setter:(SEL)setter settingChangedCallback:(void (^)(void))callback {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super initWithStyle:[ZBDevice tableViewStyle]];
     
     if (self) {
         options = selectionOptions;

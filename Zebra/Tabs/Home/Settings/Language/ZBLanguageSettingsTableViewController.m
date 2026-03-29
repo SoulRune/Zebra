@@ -27,8 +27,8 @@
 @implementation ZBLanguageSettingsTableViewController
 
 - (id)init API_AVAILABLE(ios(10.0)) {
-    self = [super initWithStyle:UITableViewStyleGrouped];
-    
+    self = [super initWithStyle:[ZBDevice tableViewStyle]];
+
     if (self) {
         useSystemLanguage = [ZBSettings usesSystemLanguage];
         originalUseSystemLanguage = useSystemLanguage;

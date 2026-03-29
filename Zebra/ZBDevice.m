@@ -534,4 +534,12 @@ static ZBBootstrap bootstrap = ZBBootstrapUnknown;
     return _UIAccessibilityButtonShapesEnabled ? _UIAccessibilityButtonShapesEnabled() : NO;
 }
 
++ (UITableViewStyle)tableViewStyle {
+    if (@available(iOS 13, *)) {
+        return UITableViewStyleInsetGrouped;
+    }
+
+    return UITableViewStyleGrouped;
+}
+
 @end

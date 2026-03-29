@@ -528,13 +528,13 @@ enum ZBMiscOrder {
 }
 
 - (void)filterSettings {
-    ZBFilterSettingsTableViewController *filterController = [[ZBFilterSettingsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    
+    ZBFilterSettingsTableViewController *filterController = [[ZBFilterSettingsTableViewController alloc] initWithStyle:[ZBDevice tableViewStyle]];
+
     [[self navigationController] pushViewController:filterController animated:YES];
 }
 
 - (void)displaySettings {
-    ZBDisplaySettingsTableViewController *displayController = [[ZBDisplaySettingsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    ZBDisplaySettingsTableViewController *displayController = [[ZBDisplaySettingsTableViewController alloc] initWithStyle:[ZBDevice tableViewStyle]];
     
     [[self navigationController] pushViewController:displayController animated:YES];
 }
