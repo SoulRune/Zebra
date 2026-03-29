@@ -24,11 +24,15 @@
 #import "ZBSettingsErrorReportingViewController.h"
 #import "ZBQueueTabAccessoryView.h"
 
-@import LNPopupController;
+#if DEBUG
+@import FLEX;
+#endif
 
 #if SENTRY
 @import Sentry;
 #endif
+
+@import LNPopupController;
 
 @interface ZBTabBarController () {
     NSMutableArray *errorMessages;
@@ -104,7 +108,11 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
+
+#if DEBUG
+    [[FLEXManager sharedManager] showExplorer];
+#endif
+
     if ([databaseManager needsToPresentRefresh]) {
         [databaseManager setNeedsToPresentRefresh:NO];
         
