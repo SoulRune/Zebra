@@ -7,6 +7,7 @@
 //
 
 #import "ZBQueuePackageTableViewCell.h"
+#import "UIView+Zebra.h"
 
 @implementation ZBQueuePackageTableViewCell {
     UIImageView *imageView;
@@ -21,9 +22,8 @@
         self->imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
         self->imageView.translatesAutoresizingMaskIntoConstraints = false;
         self->imageView.contentMode = UIViewContentModeScaleAspectFit;
-        self->imageView.layer.cornerRadius = 10;
-        self->imageView.clipsToBounds = YES;
-        
+        self->imageView.cornerRadius = 10;
+
         self->titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         self->titleLabel.translatesAutoresizingMaskIntoConstraints = false;
         self->titleLabel.font = [UIFont systemFontOfSize:17];

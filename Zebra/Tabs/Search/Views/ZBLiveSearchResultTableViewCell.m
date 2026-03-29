@@ -8,6 +8,7 @@
 
 #import "ZBLiveSearchResultTableViewCell.h"
 #import "UIColor+GlobalColors.h"
+#import "UIView+Zebra.h"
 @import SDWebImage;
 
 @implementation ZBLiveSearchResultTableViewCell
@@ -17,7 +18,7 @@
     
     self.isInstalledImageView.hidden = YES;
     self.isPaidImageView.hidden = YES;
-    self.packageIconImageView.layer.cornerRadius = 6;
+    self.packageIconImageView.cornerRadius = 6;
     self.packageIconImageView.clipsToBounds = YES;
     self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     self.isInstalledImageView.tintColor = [UIColor accentColor];

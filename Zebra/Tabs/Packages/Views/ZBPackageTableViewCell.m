@@ -12,6 +12,7 @@
 #import "ZBPackageActions.h"
 #import "ZBSource.h"
 #import "ZBQueue.h"
+#import "UIView+Zebra.h"
 @import SDWebImage;
 
 @implementation ZBPackageTableViewCell
@@ -23,9 +24,9 @@
     self.isPaidImageView.hidden = YES;
     self.queueStatusLabel.hidden = YES;
     self.queueStatusLabel.textColor = [UIColor whiteColor];
-    self.queueStatusLabel.layer.cornerRadius = 4.0;
+    self.queueStatusLabel.cornerRadius = 4.0;
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-    self.iconImageView.layer.cornerRadius = 10;
+    self.iconImageView.cornerRadius = 10;
     self.iconImageView.clipsToBounds = YES;
     self.isInstalledImageView.tintColor = [UIColor accentColor];
 }

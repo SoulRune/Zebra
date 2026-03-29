@@ -7,6 +7,7 @@
 //
 
 #import "ZBNewsCollectionViewCell.h"
+#import "UIView+Zebra.h"
 @import SDWebImage;
 
 @implementation ZBNewsCollectionViewCell
@@ -39,7 +40,7 @@
     self.layer.borderWidth = 1.0f;
     self.layer.borderColor = [UIColor clearColor].CGColor;
     self.layer.masksToBounds = YES;
-    self.layer.cornerRadius = 10.0f;
+    self.cornerRadius = 10.0f;
 }
 
 - (void)createBlur {

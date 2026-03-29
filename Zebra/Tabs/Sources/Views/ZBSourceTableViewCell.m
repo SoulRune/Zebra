@@ -9,6 +9,7 @@
 #import "ZBSourceTableViewCell.h"
 #import "UIColor+GlobalColors.h"
 #import "ZBBaseSource.h"
+#import "UIView+Zebra.h"
 
 @interface ZBSourceTableViewCell () {
     UIActivityIndicatorView *spinner;
@@ -19,7 +20,7 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    self.iconImageView.layer.cornerRadius = 10;
+    self.iconImageView.cornerRadius = 10;
     self.iconImageView.layer.masksToBounds = YES;
     self.chevronView = (UIImageView *)(self.accessoryView);
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:12];

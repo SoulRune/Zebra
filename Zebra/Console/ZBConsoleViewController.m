@@ -23,6 +23,7 @@
 #import "ZBThemeManager.h"
 #import "UIFont+Zebra.h"
 #import "ZBCommand.h"
+#import "UIView+Zebra.h"
 
 #include <sysexits.h>
 
@@ -76,7 +77,7 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
     self = [super init];
     self = [storyboard instantiateViewControllerWithIdentifier:@"consoleViewController"];
-    
+
     if (self) {
         applicationBundlePaths = [NSMutableArray new];
         queue = [ZBQueue sharedQueue];
@@ -89,7 +90,7 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
         blockDatabaseMessages = NO;
         autoFinishDelay = 3;
     }
-    
+
     return self;
 }
 
@@ -101,23 +102,23 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
     if (@available(iOS 11.0, *)) {
         self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     }
-    
+
     NSError *error = NULL;
     if ([ZBDevice isSlingshotBroken:&error]) {
         [ZBAppDelegate sendAlertFrom:self message:error.localizedDescription];
     }
-    
+
     [self setupView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
+
     if (currentStage == -1) { //Only run the process once per console cycle
         dispatch_async(dispatch_get_main_queue(), ^{
             [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
         });
-        
+
         if (downloadManager) {
             [self updateStage:ZBStageDownload];
             [downloadManager downloadPackages:[queue packagesToDownload]];
@@ -138,14 +139,14 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
     applicationBundlePaths = [NSMutableArray new];
     downloadMap = [NSMutableDictionary new];
     finishOption = ZBConsoleFinishOptionClose;
-    
+
     [self updateProgress:0.0];
-    progressTextView.layer.cornerRadius = 3.0;
+    progressTextView.cornerRadius = 3.0;
     progressText.layer.masksToBounds = YES;
     [self updateProgressText:nil];
     [self setProgressViewHidden:YES];
     self.progressView.progressTintColor = [UIColor accentColor];
-    
+
     ZBAccentColor color = [ZBSettings accentColor];
     ZBInterfaceStyle style = [ZBSettings interfaceStyle];
     if (color == ZBAccentColorMonochrome) {
@@ -156,12 +157,12 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
     else {
         self.completeButton.backgroundColor = [ZBThemeManager getAccentColor:color forInterfaceStyle:style] ?: [UIColor systemBlueColor];
     }
-    
+
     [self setProgressTextHidden:YES];
     [self updateCancelOrCloseButton];
-    
+
     [self.navigationItem setHidesBackButton:YES];
-    
+
     if (@available(iOS 13.0, *)) {
         UINavigationBarAppearance *app = [self.navigationController.navigationBar.standardAppearance copy];
         app.backgroundEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
@@ -208,13 +209,13 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
         else {
             [self setProgressTextHidden:NO];
             [self updateProgressText:NSLocalizedString(@"Performing Actions…", @"")];
-            
+
             for (ZBPackage *package in [queue packagesToInstall]) {
                 [installedPackageIdentifiers addObject:[package identifier]];
             }
-            
+
             [CanisterIngest ingestPackages:[queue packagesToInstall]];
-            
+
             for (NSArray <NSString *> *command in actions) {
                 if ([command count] == 1) {
                     [self updateStage:(ZBStage)[command[0] intValue]];
@@ -224,7 +225,7 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
                         for (int i = COMMAND_START; i < command.count; ++i) {
                             NSString *packageID = command[i];
                             if (![self isValidPackageID:packageID]) continue;
-                            
+
                             NSString *bundlePath = [ZBPackage applicationBundlePathForIdentifier:packageID];
                             if (bundlePath) {
                                 ZBLog(@"[Zebra] %@ has an app bundle", bundlePath);
@@ -238,7 +239,7 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
                             }
                         }
                     }
-                    
+
                     if (![ZBDevice needsSimulation]) {
                         ZBLog(@"[Zebra] Executing commands…");
                         [self _runSuperslingCommand:command];
@@ -253,7 +254,7 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
                     }
                 }
             }
-            
+
             for (int i = 0; i < installedPackageIdentifiers.count; ++i) {
                 NSString *packageIdentifier = installedPackageIdentifiers[i];
                 NSString *bundlePath = [ZBPackage applicationBundlePathForIdentifier:packageIdentifier];
@@ -266,7 +267,7 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
                     finishOption = ZBConsoleFinishOptionRestartSpringBoard;
                 }
             }
-            
+
             if (zebraModification) { //Zebra should be the last thing installed so here is our chance to install it.
                 if ([queue locatePackageID:@"xyz.willy.zebra"] == ZBQueueTypeUpgrade) {
                     NSLog(@"[Zebra] Zebra located in upgrade queue, removing app badge");
@@ -279,7 +280,7 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
                 if (finishOption < ZBConsoleFinishOptionReopen) {
                     finishOption = ZBConsoleFinishOptionReopen;
                 }
-                
+
                 ZBLog(@"[Zebra] modifying zebra…");
                 if (queue.removingZebra) {
                     [self postStatusUpdate:NSLocalizedString(@"Removing Zebra…", @"") atLevel:ZBLogLevelInfo];
@@ -288,9 +289,9 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
                 else {
                     [self postStatusUpdate:NSLocalizedString(@"Installing Zebra…", @"") atLevel:ZBLogLevelInfo];
                 }
-                
+
                 NSString *path = queue.zebraPath;
-                
+
                 NSArray *baseCommand;
                 if ([[ZBDevice packageManagementBinary] isEqualToString:@INSTALL_PREFIX @"/usr/bin/dpkg"]) {
                     baseCommand = @[@"dpkg", queue.removingZebra ? @"-r" : @"-i", queue.zebraPath ? path : @"xyz.willy.zebra"];
@@ -298,7 +299,7 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
                 else {
                     baseCommand = @[@"apt", @"-yqf", @"--allow-downgrades", @"-oApt::Get::HideAutoRemove=true", @"-oquiet::NoProgress=true", @"-oquiet::NoStatistic=true", queue.removingZebra ? @"remove" : @"install", queue.zebraPath ? path : @"xyz.willy.zebra"];
                 }
-                
+
                 if (![ZBDevice needsSimulation]) {
                     [self _runSuperslingCommand:baseCommand];
                 }
@@ -307,7 +308,7 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
                     queue.removingZebra ? [self writeToConsole:@"xyz.willy.zebra" atLevel:ZBLogLevelDescript] : [self writeToConsole:[path lastPathComponent] atLevel:ZBLogLevelDescript];
                 }
             }
-            
+
             ZBLog(@"[Zebra] Restart required? %@.", zebraRestartRequired ? @"Yes" : @"No");
             if (!zebraRestartRequired && updateIconCache) {
                 ZBLog(@"[Zebra] Updating Icon Caches");
@@ -353,12 +354,12 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
     ZBLog(@"[Zebra] Finishing tasks");
     [downloadMap removeAllObjects];
     [applicationBundlePaths removeAllObjects];
-    
+
     NSMutableArray *wishlist = [[ZBSettings wishlist] mutableCopy];
     [wishlist removeObjectsInArray:installedPackageIdentifiers];
-    
+
     [installedPackageIdentifiers removeAllObjects];
-    
+
     [self updateStage:ZBStageFinished];
     dispatch_async(dispatch_get_main_queue(), ^{
         [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
@@ -370,7 +371,7 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
 - (void)cancel {
     if (suppressCancel)
         return;
-    
+
     [downloadManager stopAllDownloads];
     [downloadMap removeAllObjects];
     [self updateProgress:1.0];
@@ -432,7 +433,7 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
     [self writeToConsole:NSLocalizedString(@"Updating icon cache asynchronously…", @"") atLevel:ZBLogLevelInfo];
     NSMutableArray *arguments = [NSMutableArray arrayWithObject:@"-p"];
     [arguments addObjectsFromArray:applicationBundlePaths];
-    
+
     if (![ZBDevice needsSimulation]) {
         [ZBDevice uicache:arguments observer:self];
     } else {
@@ -443,12 +444,12 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
 - (void)updateStage:(ZBStage)stage {
     currentStage = stage;
     suppressCancel = stage != ZBStageDownload && stage != ZBStageFinished;
-    
+
     switch (stage) {
         case ZBStageDownload:
             [self updateTitle:NSLocalizedString(@"Downloading", @"")];
             [self writeToConsole:NSLocalizedString(@"Downloading Packages…", @"") atLevel:ZBLogLevelInfo];
-            
+
             [self setProgressTextHidden:NO];
             [self setProgressViewHidden:NO];
             break;
@@ -476,7 +477,7 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
         default:
             break;
     }
-    
+
     [self setProgressViewHidden:stage != ZBStageDownload];
     [self updateCancelOrCloseButton];
 }
@@ -543,7 +544,7 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
 - (void)writeToConsole:(NSString *)str atLevel:(ZBLogLevel)level {
     if (str == nil)
         return;
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         UIColor *color;
         UIFont *font;
@@ -567,17 +568,17 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
         }
 
         NSDictionary *attrs = @{ NSForegroundColorAttributeName: color, NSFontAttributeName: font };
-        
+
         //Adds a newline if there is not already one
         NSString *string = [str copy];
         if (![string hasSuffix:@"\n"]) {
             string = [str stringByAppendingString:@"\n"];
         }
-        
+
         if (string == nil) {
             return;
         }
-        
+
         [self->consoleView.textStorage appendAttributedString:[[NSAttributedString alloc] initWithString:string attributes:attrs]];
 
         if (self->consoleView.text.length) {
@@ -606,7 +607,7 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
             self.cancelOrCloseButton.enabled = YES;
             self.cancelOrCloseButton.title = NSLocalizedString(@"Cancel", @"");
         }
-        
+
         if (self.cancelOrCloseButton.enabled) {
             self.cancelOrCloseButton.tintColor = [UIColor whiteColor];
         }
@@ -779,7 +780,7 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
 
 - (void)finishedAllDownloads {
     [self performSelectorInBackground:@selector(performTasks) withObject:nil];
-    
+
     suppressCancel = YES;
     [self updateCancelOrCloseButton];
 }

@@ -22,6 +22,7 @@
 #import "ZBPurchaseInfo.h"
 #import "ZBPackageActionType.h"
 #import "UIBarButtonItem+blocks.h"
+#import "UIView+Zebra.h"
 #import <objc/runtime.h>
 
 @import SDWebImage;
@@ -97,7 +98,7 @@ typedef NS_ENUM(NSUInteger, ZBPackageInfoOrder) {
 
     self.view.backgroundColor = [UIColor groupedTableViewBackgroundColor];
 
-    self.packageIcon.layer.cornerRadius = 20;
+    self.packageIcon.cornerRadius = 20;
     self.packageIcon.layer.masksToBounds = YES;
     infos = [NSMutableDictionary new];
     [self setPackage];

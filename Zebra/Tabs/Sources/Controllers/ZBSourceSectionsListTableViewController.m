@@ -23,6 +23,7 @@
 #import "UIBarButtonItem+blocks.h"
 #import "UIImageView+Zebra.h"
 #import "NSURLSession+Zebra.h"
+#import "UIView+Zebra.h"
 
 @import SDWebImage;
 
@@ -82,7 +83,7 @@
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     imageView.center = self.navigationItem.titleView.center;
     imageView.contentMode = UIViewContentModeScaleAspectFit;
-    imageView.layer.cornerRadius = 5;
+    imageView.cornerRadius = 5;
     imageView.layer.masksToBounds = YES;
     
     [imageView sd_setImageWithURL:[source iconURL] placeholderImage:[UIImage imageNamed:@"Unknown"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {

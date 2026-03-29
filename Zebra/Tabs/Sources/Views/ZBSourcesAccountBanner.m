@@ -14,6 +14,7 @@
 #import "ZBUserInfo.h"
 #import "ZBAppDelegate.h"
 #import "ZBSourceSectionsListTableViewController.h"
+#import "UIView+Zebra.h"
 
 @interface ZBSourcesAccountBanner () {
     BOOL hideUDID;
@@ -114,7 +115,7 @@
     }
     self.descriptionLabel.textColor = [UIColor primaryTextColor];
     self.button.tintColor = [UIColor accentColor];
-    self.button.layer.cornerRadius = 14;
+    self.button.cornerRadius = 14;
     self.seperatorView.backgroundColor = [UIColor cellSeparatorColor];
 }
 

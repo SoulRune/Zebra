@@ -7,6 +7,7 @@
 //
 
 #import "ZBCanisterPrivacyViewController.h"
+#import "UIView+Zebra.h"
 
 @interface ZBCanisterPrivacyViewController ()
 
@@ -81,8 +82,7 @@ NSURL *privacyPolicy;
         [accept setTitle:NSLocalizedString(@"Accept", @"") forState:UIControlStateNormal];
         [accept setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         accept.backgroundColor = [UIColor accentColor];
-        accept.layer.masksToBounds = true;
-        accept.layer.cornerRadius = 7.5;
+        accept.cornerRadius = 7.5;
         [accept addTarget:self action:@selector(openAccept) forControlEvents:UIControlEventTouchUpInside];
         
         [bodyStackView addArrangedSubview:bodyLabel];
