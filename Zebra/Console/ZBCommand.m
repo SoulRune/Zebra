@@ -10,16 +10,19 @@
 #import "ZBDevice.h"
 #import "spawn.h"
 
-@interface ZBPipe : NSObject {
+@interface ZBCommandPipe : NSObject {
 @public
     int fds[2];
 }
+
 - (void)close;
 - (void)closeRead;
 - (void)closeWrite;
+
 @end
 
-@implementation ZBPipe
+@implementation ZBCommandPipe
+
 - (instancetype)init {
     self = [super init];
     if (![self open]) {
@@ -27,38 +30,45 @@
     }
     return self;
 }
+
 - (BOOL)open {
-    if (pipe(fds) == -1) return NO;
-    return YES;
+    return pipe(fds) != -1;
 }
+
 - (void)close {
     [self closeRead];
     [self closeWrite];
 }
+
 - (void)closeRead {
     [self close:0];
 }
+
 - (void)closeWrite {
     [self close:1];
 }
-- (void)close:(int)idx {
-    NSParameterAssert(idx == 0 || idx == 1);
-    if (fds[idx] > 0) {
-        close(fds[idx]);
-        fds[idx] = -1;
+
+- (void)close:(int)index {
+    NSParameterAssert(index == 0 || index == 1);
+    if (fds[index] > 0) {
+        close(fds[index]);
+        fds[index] = -1;
     }
 }
+
 - (void)dealloc {
     [self close];
 }
+
 @end
 
 @interface ZBCommandFds : NSObject {
 @public
-    ZBPipe *stdOut;
-    ZBPipe *stdErr;
-    ZBPipe *finish;
+    ZBCommandPipe *stdOut;
+    ZBCommandPipe *stdErr;
+    ZBCommandPipe *finish;
 }
+
 + (instancetype)commandFdsWithFinish:(BOOL)useFinishFd;
 - (void)close;
 - (void)closeRead;
@@ -68,16 +78,16 @@
 @implementation ZBCommandFds
 
 + (instancetype)commandFdsWithFinish:(BOOL)useFinishFd {
-    ZBCommandFds *fds = [ZBCommandFds new];
-    fds->stdOut = [ZBPipe new];
-    fds->stdErr = [ZBPipe new];
-    
+    ZBCommandFds *fds = [[ZBCommandFds alloc] init];
+    fds->stdOut = [[ZBCommandPipe alloc] init];
+    fds->stdErr = [[ZBCommandPipe alloc] init];
+
     if (!fds->stdOut || !fds->stdErr) {
         return nil;
     }
     
     if (useFinishFd) {
-        fds->finish = [ZBPipe new];
+        fds->finish = [[ZBCommandPipe alloc] init];
         if (!fds->finish) return nil;
     }
     
@@ -88,16 +98,19 @@
     [self closeRead];
     [self closeWrite];
 }
+
 - (void)closeRead {
     [self->stdOut closeRead];
     [self->stdErr closeRead];
     [self->finish closeRead];
 }
+
 - (void)closeWrite {
     [self->stdOut closeWrite];
     [self->stdErr closeWrite];
     [self->finish closeWrite];
 }
+
 @end
 
 static const int ZBCommandFinishFileno = 3;
@@ -112,7 +125,7 @@ static const int ZBCommandFinishFileno = 3;
     // first argument, which is typically the path or name of the binary being invoked. Add it now.
     arguments = [@[command] arrayByAddingObjectsFromArray:arguments ?: @[]];
     ZBCommand *task = [[ZBCommand alloc] initWithCommand:command arguments:arguments root:root delegate:nil];
-    task.output = [NSMutableString new];
+    task.output = [NSMutableString string];
     return [task execute] == 0 ? task.output : nil;
 }
 
@@ -120,7 +133,9 @@ static const int ZBCommandFinishFileno = 3;
     self = [super init];
 
     if (self) {
-        if (delegate) self->delegate = delegate;
+        if (delegate) {
+            self->delegate = delegate;
+        }
     }
 
     return self;
