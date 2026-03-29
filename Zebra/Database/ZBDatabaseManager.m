@@ -1740,8 +1740,32 @@
             sqlite3_bind_text(statement, offset + 8, eighthSearchTerm, -1, SQLITE_TRANSIENT);
 
             while (sqlite3_step(statement) == SQLITE_ROW) {
-                ZBPackage *package = [[ZBPackage alloc] initWithSQLiteStatement:statement];
-                [packages addObject:package];
+                const char *providesLine = (const char *)sqlite3_column_text(statement, ZBPackageColumnProvides);
+                if (providesLine != 0) {
+                    NSString *provides = [[NSString stringWithUTF8String:providesLine] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                    NSArray *virtualPackages = [provides componentsSeparatedByString:@","];
+
+                    for (NSString *virtualPackage in virtualPackages) {
+                        //If there is a comparison and a version then we return the first package that satisfies this comparison, otherwise we return the first package we see
+                        //(this also sets us up better later for interactive dependency resolution)
+
+                        NSArray *versionComponents = [ZBDependencyResolver separateVersionComparison:[virtualPackage stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+                        if (![versionComponents[0] isEqualToString:packageIdentifier]) continue;
+
+                        NSString *providedVersion = versionComponents[2];
+                        BOOL providedVersionIsReal = ![providedVersion isEqualToString:@"0:0"];
+
+                        if (!comparison || !version) {
+                            ZBPackage *package = [[ZBPackage alloc] initWithSQLiteStatement:statement];
+                            [packages addObject:package];
+                            break;
+                        } else if (providedVersionIsReal && [ZBDependencyResolver doesVersion:providedVersion satisfyComparison:comparison ofVersion:version]) {
+                            ZBPackage *package = [[ZBPackage alloc] initWithSQLiteStatement:statement];
+                            [packages addObject:package];
+                            break;
+                        }
+                    }
+                }
             }
         } else {
             [self printDatabaseError];
@@ -1749,20 +1773,8 @@
         }
         sqlite3_finalize(statement);
 
-        for (ZBPackage *package in packages) {
-            //If there is a comparison and a version then we return the first package that satisfies this comparison, otherwise we return the first package we see
-            //(this also sets us up better later for interactive dependency resolution)
-            if (comparison && version && [ZBDependencyResolver doesPackage:package satisfyComparison:comparison ofVersion:version]) {
-                [self closeDatabase];
-                return package;
-            }
-            else if (!comparison || !version) {
-                [self closeDatabase];
-                return package;
-            }
-        }
-
         [self closeDatabase];
+        return packages.firstObject;
     } else {
         [self printDatabaseError];
     }
@@ -1859,13 +1871,15 @@
         sqlite3_finalize(statement);
 
         // Only try to resolve "Provides" if we can't resolve the normal package.
+        BOOL foundViaProvides = NO;
         if (checkVirtual && package == NULL) {
             package = [self installedPackageThatProvides:identifier thatSatisfiesComparison:comparison ofVersion:version thatIsNot:exclude]; //there is a scenario here where two packages that provide a package could be found (ex: anemone, snowboard, and ithemer all provide winterboard) we need to ask the user which one to pick.
+            foundViaProvides = package != NULL;
         }
 
         if (package != NULL) {
             [self closeDatabase];
-            if (version != NULL && comparison != NULL) {
+            if (!foundViaProvides && version != NULL && comparison != NULL) {
                 return [ZBDependencyResolver doesPackage:package satisfyComparison:comparison ofVersion:version] ? package : NULL;
             }
             return package;
