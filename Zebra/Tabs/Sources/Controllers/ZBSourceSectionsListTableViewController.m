@@ -241,13 +241,24 @@
     }
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self _updateFeaturedCollectionInset];
+}
+
+- (void)_updateFeaturedCollectionInset {
+    self.featuredCollection.contentInset = UIEdgeInsetsMake(0, self.tableView.layoutMargins.left, 0, self.tableView.layoutMargins.right);
+    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.featuredCollection.collectionViewLayout;
+    layout.minimumLineSpacing = 15;
+}
+
 - (void)setupFeaturedPackages {
     [self.tableView beginUpdates];
     self.tableView.tableHeaderView = self.featuredCollection;
     self.tableView.tableHeaderView.frame = CGRectZero;
     self.featuredCollection.delegate = self;
     self.featuredCollection.dataSource = self;
-    [self.featuredCollection setContentInset:UIEdgeInsetsMake(0.f, 15.f, 0.f, 15.f)];
+    [self _updateFeaturedCollectionInset];
     self.featuredCollection.backgroundColor = [UIColor clearColor];
     // self.featuredCollection.collectionViewLayout.collectionViewContentSize.height = height;
     /*self.featuredCollection.frame = CGRectMake (self.featuredCollection.frame.origin.x,self.featuredCollection.frame.origin.y,self.featuredCollection.frame.size.width,height);*/ // objective c
@@ -370,13 +381,6 @@
     [cell.imageView sd_setImageWithURL:currentBanner[@"url"] placeholderImage:[UIImage imageNamed:@"Unknown"]];
     cell.packageID = currentBanner[@"package"];
     [cell.titleLabel setText:currentBanner[@"title"]];
-    
-    // dispatch_async(dispatch_get_main_queue(), ^{
-//        if ([[self.fullJSON objectForKey:@"itemCornerRadius"] doubleValue]) {
-//            cell.layer.cornerRadius = [self->_fullJSON[@"itemCornerRadius"] doubleValue];
-//        }
-    // });
-    
     return cell;
 }
 

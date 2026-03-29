@@ -77,7 +77,7 @@ typedef enum ZBInfoOrder : NSUInteger {
     self.featuredCollection.delegate = self;
     self.featuredCollection.dataSource = self;
     [self.featuredCollection setShowsHorizontalScrollIndicator:NO];
-    [self.featuredCollection setContentInset:UIEdgeInsetsMake(0, 15, 0, 15)];
+    [self _updateFeaturedCollectionInset];
     [self setupFeatured];
     
     if (@available(iOS 13.0, *)) {
@@ -136,6 +136,17 @@ typedef enum ZBInfoOrder : NSUInteger {
     self.tableView.backgroundColor = [UIColor groupedTableViewBackgroundColor];
     self.headerView.backgroundColor = [UIColor groupedTableViewBackgroundColor];
     self.navigationController.navigationBar.tintColor = [UIColor accentColor];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self _updateFeaturedCollectionInset];
+}
+
+- (void)_updateFeaturedCollectionInset {
+    self.featuredCollection.contentInset = UIEdgeInsetsMake(0, self.tableView.layoutMargins.left, 0, self.tableView.layoutMargins.right);
+    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.featuredCollection.collectionViewLayout;
+    layout.minimumLineSpacing = 15;
 }
 
 - (void)dealloc {
@@ -298,8 +309,14 @@ typedef enum ZBInfoOrder : NSUInteger {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
-        case ZBWelcome:
-            return 1 + ([ZBDevice needsSimulation] ? 1 : 0);
+    case ZBWelcome: {
+#if TARGET_OS_SIMULATOR
+        BOOL isSimulated = NO;
+#else
+        BOOL isSimulated = [ZBDevice needsSimulation];
+#endif
+            return 1 + (isSimulated ? 1 : 0);
+    }
         case ZBViews:
             return 3;
         case ZBLinks:
@@ -666,7 +683,7 @@ typedef enum ZBInfoOrder : NSUInteger {
         NSDictionary *currentBanner = [selectedFeatured objectAtIndex:indexPath.row];
         NSString *section = currentBanner[@"section"];
         if (section == NULL) section = @"Unknown";
-        
+
         cell.imageView.sd_imageIndicator = nil;
         [cell.imageView sd_setImageWithURL:[NSURL URLWithString:currentBanner[@"url"]] placeholderImage:[UIImage imageNamed:section]];
         cell.packageID = currentBanner[@"package"];

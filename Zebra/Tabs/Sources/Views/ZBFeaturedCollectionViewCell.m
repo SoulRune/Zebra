@@ -7,6 +7,7 @@
 //
 
 #import "ZBFeaturedCollectionViewCell.h"
+#import "UIView+Zebra.h"
 @import SDWebImage;
 
 @implementation ZBFeaturedCollectionViewCell
@@ -28,8 +29,11 @@
     self.backgroundColor = [UIColor clearColor];
     self.layer.borderWidth = 1.0f;
     self.layer.borderColor = [UIColor clearColor].CGColor;
-    self.layer.masksToBounds = YES;
-    self.layer.cornerRadius = 10.0f;
+    if (@available(iOS 26, *)) {
+        self.cornerRadius = 27.0f;
+    } else {
+        self.cornerRadius = 10.0f;
+    }
 }
 
 // Here we remove all the custom stuff that we added to our subclassed cell
