@@ -1872,7 +1872,7 @@
 			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
 			requirement = {
 				kind = exactVersion;
-				version = 5.20.1;
+				version = 5.19.4;
 			};
 		};
 		4E2E6BF82820E5CF0089E4FB /* XCRemoteSwiftPackageReference "LNPopupController" */ = {
