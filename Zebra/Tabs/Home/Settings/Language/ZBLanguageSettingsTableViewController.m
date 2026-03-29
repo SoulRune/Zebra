@@ -63,7 +63,11 @@
 }
 
 - (void)layoutNavigationButtons {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Apply", @"") style:UIBarButtonItemStyleDone target:self action:@selector(applyChanges)];
+    if (@available(iOS 26, *)) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(applyChanges)];
+    } else {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Apply", @"") style:UIBarButtonItemStyleDone target:self action:@selector(applyChanges)];
+    }
     self.navigationItem.rightBarButtonItem.enabled = [self differentSettings];
 }
 

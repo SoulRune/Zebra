@@ -107,7 +107,7 @@
 
 - (void)layoutNavigationButtonsRefreshing {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"") style:UIBarButtonItemStylePlain target:self action:@selector(cancelRefresh:)];
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelRefresh:)];
         self.navigationItem.leftBarButtonItems = @[cancelButton];
     });
 }

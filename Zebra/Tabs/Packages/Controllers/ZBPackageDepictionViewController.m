@@ -92,6 +92,7 @@ typedef NS_ENUM(NSUInteger, ZBPackageInfoOrder) {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configureNavButton) name:@"ZBUpdateNavigationButtons" object:nil];
 
     self.navigationItem.title = @"";
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:package.name style:UIBarButtonItemStylePlain target:nil action:nil];
     if (@available(iOS 11, *)) {
         self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     }
@@ -308,7 +309,7 @@ typedef NS_ENUM(NSUInteger, ZBPackageInfoOrder) {
     navButtonsBeingConfigured = YES;
 
     if ([self presented]) {
-        UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStylePlain target:self action:@selector(goodbye)];
+        UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemClose target:self action:@selector(goodbye)];
         self.navigationItem.leftBarButtonItem = closeButton;
     }
 

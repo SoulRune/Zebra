@@ -195,7 +195,7 @@
 - (void)configureUpgradeButton {
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self->needsUpdatesSection) {
-            UIBarButtonItem *updateButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Upgrade All", @"") style:UIBarButtonItemStylePlain target:self action:@selector(upgradeAll)];
+            UIBarButtonItem *updateButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Upgrade All", @"") style:UIBarButtonItemStyleDone target:self action:@selector(upgradeAll)];
             self.navigationItem.rightBarButtonItem = updateButton;
         } else {
             self.navigationItem.rightBarButtonItem = nil;

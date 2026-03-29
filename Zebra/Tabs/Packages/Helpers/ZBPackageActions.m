@@ -269,8 +269,22 @@
                 }
             }
         };
-        
-        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:[self buttonTitleForPackage:package] style:UIBarButtonItemStylePlain actionHandler:handler];
+
+        UIBarButtonItemStyle style = UIBarButtonItemStylePlain;
+        NSArray <NSNumber *> *actions = [package possibleActions];
+        if ([actions count] > 0) {
+            ZBPackageActionType action = actions[0].intValue;
+            switch (action) {
+            case ZBPackageActionInstall:
+            case ZBPackageActionUpgrade:
+                style = UIBarButtonItemStyleDone;
+
+            default:
+                break;
+            }
+        }
+
+        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:[self buttonTitleForPackage:package] style:style actionHandler:handler];
         if ([package mightRequirePayment]) {
             [package purchaseInfo:^(ZBPurchaseInfo * _Nonnull info) {
                 if (info) { // Package does have purchase info
@@ -283,7 +297,7 @@
                             });
                             return;
                         }
-                        UIBarButtonItem *purchaseButton = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain actionHandler:^{
+                        UIBarButtonItem *purchaseButton = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStyleDone actionHandler:^{
                             [self performAction:ZBPackageActionInstall forPackage:package completion:nil];
                         }];
                         

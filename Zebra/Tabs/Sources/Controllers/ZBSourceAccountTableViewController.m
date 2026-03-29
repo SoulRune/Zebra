@@ -58,7 +58,7 @@
     self.navigationItem.title = NSLocalizedString(@"My Account", @"");
     
     if (self.presentingViewController) {
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"") style:UIBarButtonItemStyleDone actionHandler:^{
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone actionHandler:^{
             [self dismissViewControllerAnimated:YES completion:nil];
         }];
         self.navigationItem.rightBarButtonItem = doneButton;
