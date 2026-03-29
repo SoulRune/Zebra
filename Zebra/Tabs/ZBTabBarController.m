@@ -234,8 +234,14 @@
 - (UINavigationController *)popupController {
     if (!_popupController) {
         _popupController = [[UINavigationController alloc] initWithRootViewController:self.queueController];
+
+        if (@available(iOS 15, *)) {
+            UISheetPresentationController *sheetPresentation = _popupController.sheetPresentationController;
+            sheetPresentation.detents = @[[UISheetPresentationControllerDetent mediumDetent]];
+            self.queueController.sheetController = sheetPresentation;
+        }
     }
-    
+
     return _popupController;
 }
 
@@ -243,7 +249,7 @@
     if (!_queueController) {
         _queueController = [ZBQueueViewController new];
     }
-    
+
     return _queueController;
 }
 

@@ -111,6 +111,21 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
     [self setupView];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    // Make sure we’re a full height sheet that can’t be dismissed
+    if (@available(iOS 13, *)) {
+        self.modalInPresentation = YES;
+    }
+
+    if (@available(iOS 15, *)) {
+        [self.sheetPresentationController animateChanges:^{
+            self.sheetPresentationController.detents = @[[UISheetPresentationControllerDetent largeDetent]];
+        }];
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
@@ -619,6 +634,13 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
         }
         else {
             self.cancelOrCloseButton.tintColor = [UIColor clearColor];
+        }
+
+        // Allow swipe dismissal
+        if (!self->suppressCancel && !self->zebraRestartRequired) {
+            if (@available(iOS 13, *)) {
+                self.modalInPresentation = NO;
+            }
         }
     });
 }
