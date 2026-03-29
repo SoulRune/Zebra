@@ -317,7 +317,7 @@ static ZBBootstrap bootstrap = ZBBootstrapUnknown;
 
 + (ZBJailbreak)_jailbreak {
     if (self.needsSimulation) {
-        NSLog(@"[ZBDevice] simulated?");
+        NSLog(@"[ZBDevice] Device is simulated");
         return ZBJailbreakSimulated;
     }
 
