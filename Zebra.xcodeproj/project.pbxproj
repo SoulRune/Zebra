@@ -1087,7 +1087,6 @@
 				BuildIndependentTargetsInParallel = YES;
 				CLASSPREFIX = ZB;
 				LastUpgradeCheck = 2640;
-				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "Zebra Team";
 				TargetAttributes = {
 					89C5FDDC21B1B13700A10E58 = {
@@ -1872,12 +1871,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
 				kind = exactVersion;
 				version = 5.19.4;
-				kind = exactVersion;
-				version = 5.20.1;
 			};
 		};
 		4E2E6BF82820E5CF0089E4FB /* XCRemoteSwiftPackageReference "LNPopupController" */ = {
