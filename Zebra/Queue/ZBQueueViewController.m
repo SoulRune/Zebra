@@ -18,7 +18,6 @@
 #import "ZBQueuePackageTableViewCell.h"
 
 @import SDWebImage;
-@import LNPopupController;
 
 @interface ZBQueueViewController () {
     ZBQueue *queue;
@@ -46,10 +45,19 @@
     if (@available(iOS 11.0, *)) {
         self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     }
-    
-    if (@available(iOS 15.0, *)) {
-        self.tableView.sectionHeaderTopPadding = 0.0;
+
+    if (@available(iOS 13, *)) {
+        self.tableView.backgroundColor = [UIColor clearColor];
+        self.tableView.backgroundView = [[UIView alloc] init];
     }
+
+    if (@available(iOS 15, *)) {
+        self.tableView.sectionHeaderTopPadding = 0.0;
+
+        // Hide close button to prioritise swipe down
+        self.navigationItem.leftBarButtonItems = @[self.navigationItem.leftBarButtonItems[1]];
+    }
+
     self.tableView.sectionHeaderHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedSectionHeaderHeight = 44;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
@@ -86,13 +94,13 @@
 #pragma mark - Button actions
 
 - (IBAction)dismissQueue:(id)sender {
-    [[ZBAppDelegate tabBarController] closePopupAnimated:YES completion:nil];
+    [[ZBAppDelegate tabBarController] closeQueue];
 }
 
 - (IBAction)clearQueue:(id)sender {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Are you sure?", @"") message:NSLocalizedString(@"Are you sure you want to clear the Queue?", @"") preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    UIAlertAction *confirm = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle:NSLocalizedString(@"Clear Queue", @"") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         [self->queue clear];
     }];
     [alert addAction:confirm];
@@ -104,25 +112,28 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
+- (void)_pushConsole {
+    ZBConsoleViewController *console = [[ZBConsoleViewController alloc] init];
+    [self.navigationController pushViewController:console animated:YES];
+}
+
 - (IBAction)confirm:(id)sender {
     if ([queue containsEssentialOrRequiredPackage]) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Are you sure?", @"") message:NSLocalizedString(@"One or more of the packages in the Queue for removal is essential or required. It is not recommended to proceed unless you know exactly what you are doing. Removing these packages could cause irreversible damage to your device and might result in a full restore.", @"") preferredStyle:UIAlertControllerStyleActionSheet];
-        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedString(@"One or more of the packages in the Queue for removal is essential or required. It is not recommended to proceed unless you know exactly what you are doing. Removing these packages could cause irreversible damage to your device and might result in a full restore.", @"") preferredStyle:UIAlertControllerStyleActionSheet];
+
         UIAlertAction *confirm = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-            ZBConsoleViewController *console = [[ZBConsoleViewController alloc] init];
-            [self.navigationController pushViewController:console animated:YES];
+            [self _pushConsole];
         }];
         [alert addAction:confirm];
-        
+
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:nil];
         [alert addAction:cancel];
-        
+
         alert.popoverPresentationController.barButtonItem = sender;
         [self presentViewController:alert animated:YES completion:nil];
     }
     else {
-        ZBConsoleViewController *console = [[ZBConsoleViewController alloc] init];
-        [self.navigationController pushViewController:console animated:YES];
+        [self _pushConsole];
     }
 }
 
@@ -154,12 +165,16 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectZero];
-    contentView.backgroundColor = [UIColor tableViewBackgroundColor];
-    
+
+    if (@available(iOS 13, *)) {
+    } else {
+        contentView.backgroundColor = [UIColor tableViewBackgroundColor];
+    }
+
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.numberOfLines = 0;
     label.textColor = [UIColor primaryTextColor];
-    label.font = [UIFont systemFontOfSize:15 weight:UIFontWeightSemibold];
+    label.font = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
     label.text = [self tableView:tableView titleForHeaderInSection:section];
     label.translatesAutoresizingMaskIntoConstraints = NO;
     [contentView addSubview:label];

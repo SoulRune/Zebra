@@ -201,6 +201,12 @@
 }
 
 - (void)configurePopupBar {
+#ifdef __IPHONE_26_0
+    if (@available(iOS 26, *)) {
+        return;
+    }
+#endif
+
     if (self.interfaceStyle == ZBInterfaceStylePureBlack) {
         [[LNPopupBar appearance] setBackgroundColor:[UIColor blackColor]];
         [[LNPopupBar appearance] setTranslucent:NO];

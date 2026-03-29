@@ -17,7 +17,6 @@
 #import "ZBQueue.h"
 #import "UIColor+GlobalColors.h"
 
-@import LNPopupController;
 
 @interface ZBSearchResultsTableViewController ()
 @property (nonatomic, weak) ZBPackageDepictionViewController *previewPackageDepictionVC;
@@ -64,8 +63,7 @@
     UISearchBar *searchBar = searchController.searchBar;
     CGFloat bottomInset = CGRectGetHeight(tabBarController.tabBar.frame);
     if ([ZBQueue count]) {
-        LNPopupBar *popup = [tabBarController popupBar];
-        bottomInset += CGRectGetHeight(popup.frame);
+        bottomInset += [tabBarController queueBarHeight];
     }
     self.tableView.contentInset = UIEdgeInsetsMake(CGRectGetHeight(searchBar.superview.frame), 0, bottomInset, 0);
 }

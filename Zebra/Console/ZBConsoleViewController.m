@@ -181,8 +181,14 @@ typedef NS_ENUM(NSUInteger, ZBConsoleFinishOption) {
         }
     }
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
-    
-    [[[[ZBAppDelegate tabBarController] popupContentView] popupInteractionGestureRecognizer] setDelegate:self];
+
+#ifdef __IPHONE_26_0
+    if (@available(iOS 26, *)) {
+    } else
+#endif
+    {
+        [[[[ZBAppDelegate tabBarController] popupContentView] popupInteractionGestureRecognizer] setDelegate:self];
+    }
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {

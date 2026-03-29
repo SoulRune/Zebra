@@ -22,6 +22,7 @@
 #import "UIAlertController+Private.h"
 #import "ZBLabelTextView.h"
 #import "ZBSettingsErrorReportingViewController.h"
+#import "ZBQueueTabAccessoryView.h"
 
 @import LNPopupController;
 
@@ -33,7 +34,11 @@
     NSMutableArray *errorMessages;
     ZBDatabaseManager *databaseManager;
     UIActivityIndicatorView *indicator;
+#ifdef __IPHONE_26_0
+    ZBQueueTabAccessoryView *_queueAccessoryView;
+#endif
     BOOL sourcesUpdating;
+    BOOL _queueBarVisible;
 }
 
 @property (nonatomic) UINavigationController *popupController;
@@ -105,8 +110,10 @@
         
         ZBRefreshViewController *refreshController = [[ZBRefreshViewController alloc] initWithDropTables:YES];
         [self presentViewController:refreshController animated:YES completion:nil];
+#if SENTRY
     } else if ([ZBSettings sendErrorReports] == ZBSendErrorReportsUnspecified && [SentrySDK crashedLastRun]) {
         [self _showErrorReportPrompt];
+#endif
     }
     
     //poor hack to get the tab bar to re-layout
@@ -149,12 +156,16 @@
                 return;
             }
             sourcesItem.badgeValue = @"";
-            
-            UIView *badge = [[sourcesItem view] valueForKey:@"_badge"];
-            self->indicator.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-            self->indicator.center = badge.center;
-            [self->indicator startAnimating];
-            [badge addSubview:self->indicator];
+
+            if (@available(iOS 26, *)) {
+                // TODO: Broken on iOS 26
+            } else {
+                UIView *badge = [[sourcesItem view] valueForKey:@"_badge"];
+                self->indicator.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+                self->indicator.center = badge.center;
+                [self->indicator startAnimating];
+                [badge addSubview:self->indicator];
+            }
             self->sourcesUpdating = YES;
         } else {
             sourcesItem.badgeValue = nil;
@@ -236,38 +247,101 @@
     return _queueController;
 }
 
+- (CGFloat)queueBarHeight {
+    if (!_queueBarVisible) {
+        return 0;
+    }
+
+#ifdef __IPHONE_26_0
+    if (@available(iOS 26, *)) {
+        return self.bottomAccessory.contentView.frame.size.height;
+    }
+#endif
+
+    return self.popupBar.frame.size.height;
+}
+
 - (void)updateQueueBar {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self updateQueueBarPackageCount:[ZBQueue count]];
-        
-        LNPopupPresentationState state = self.popupPresentationState;
-        if (state != LNPopupPresentationStateOpen) {
-            [self openQueue:NO];
-        }
-        else {
-            [[self popupBar] setNeedsLayout];
+
+#ifdef __IPHONE_26_0
+        if (@available(iOS 26, *)) {
+            if (!self->_queueBarVisible) {
+                [self openQueue:NO];
+            }
+        } else
+#endif
+        {
+            LNPopupPresentationState state = self.popupPresentationState;
+            if (state != LNPopupPresentationStateOpen) {
+                [self openQueue:NO];
+            } else {
+                [[self popupBar] setNeedsLayout];
+            }
         }
     });
 }
 
 - (void)updateQueueBarPackageCount:(int)count {
     dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *title = nil, *subtitle = nil;
+
         if (count > 0) {
-            self.popupController.popupItem.title = count > 1 ? [NSString stringWithFormat:NSLocalizedString(@"%d Packages Queued", @""), count] : [NSString stringWithFormat:NSLocalizedString(@"%d Package Queued", @""), count];
-            self.popupController.popupItem.subtitle = NSLocalizedString(@"Tap to manage", @"");
-            
-            ZBQueueViewController *queue = self.popupController.viewControllers[0];
-            [queue refreshTable];
+            title = count > 1
+                ? [NSString stringWithFormat:NSLocalizedString(@"%d Packages Queued", @""), count]
+                : [NSString stringWithFormat:NSLocalizedString(@"%d Package Queued", @""), count];
+            subtitle = NSLocalizedString(@"Tap to manage", @"");
+        } else {
+            title = NSLocalizedString(@"No Packages Queued", @"");
+            subtitle = nil;
         }
-        else {
-            self.popupController.popupItem.title = NSLocalizedString(@"No Packages Queued", @"");
-            self.popupController.popupItem.subtitle = nil;
+
+#ifdef __IPHONE_26_0
+        if (@available(iOS 26, *)) {
+            self->_queueAccessoryView.titleLabel.text = title;
+            return;
         }
+#endif
+
+        self.popupController.popupItem.title = title;
+        self.popupController.popupItem.subtitle = subtitle;
+
+        ZBQueueViewController *queue = self.popupController.viewControllers[0];
+        [queue refreshTable];
     });
 }
 
 - (void)openQueue:(BOOL)openPopup {
     dispatch_async(dispatch_get_main_queue(), ^{
+#ifdef __IPHONE_26_0
+        if (@available(iOS 26, *)) {
+            if (openPopup) {
+                [self presentViewController:self.popupController animated:YES completion:nil];
+            }
+
+            if (self->_queueBarVisible) {
+                return;
+            }
+
+            self->_queueAccessoryView = [[ZBQueueTabAccessoryView alloc] init];
+            UITabAccessory *accessory = [[UITabAccessory alloc] initWithContentView:self->_queueAccessoryView];
+            [self setBottomAccessory:accessory animated:YES];
+
+            UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+            [self->_queueAccessoryView addGestureRecognizer:tapGesture];
+
+            UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleHoldGesture:)];
+            longPressGesture.minimumPressDuration = 1;
+            longPressGesture.delegate = self;
+            [self->_queueAccessoryView addGestureRecognizer:longPressGesture];
+
+            [self updateQueueBarPackageCount:[ZBQueue count]];
+            self->_queueBarVisible = YES;
+            return;
+        }
+#endif
+
         LNPopupPresentationState state = self.popupPresentationState;
         if ((openPopup && state == LNPopupPresentationStateOpen) || (!openPopup && (state == LNPopupPresentationStateOpen || state == LNPopupPresentationStateBarPresented))) {
             return;
@@ -275,38 +349,68 @@
 
         self.popupInteractionStyle = LNPopupInteractionStyleSnap;
         self.popupContentView.popupCloseButtonStyle = LNPopupCloseButtonStyleNone;
-        
+
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleHoldGesture:)];
         longPress.minimumPressDuration = 1;
         longPress.delegate = self;
-        
         [self.popupBar addGestureRecognizer:longPress];
+
+        [self updateQueueBarPackageCount:[ZBQueue count]];
+
         [self presentPopupBarWithContentViewController:self.popupController openPopup:openPopup animated:YES completion:^{
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ZBQueueBarHeightDidChange" object:nil];
         }];
     });
 }
 
+- (void)handleTapGesture:(UITapGestureRecognizer *)gesture {
+    if (gesture.state == UIGestureRecognizerStateEnded) {
+        [self openQueue:YES];
+    }
+}
+
 - (void)handleHoldGesture:(UILongPressGestureRecognizer *)gesture {
-    if (UIGestureRecognizerStateBegan == gesture.state) {
-        UIAlertController *clearQueue = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Clear Queue", @"") message:NSLocalizedString(@"Are you sure you want to clear the Queue?", @"") preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction *yesAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Yes", @"") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-            
+    if (gesture.state == UIGestureRecognizerStateBegan) {
+        UIAlertController *clearQueue = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+#ifdef __IPHONE_26_0
+        clearQueue.popoverPresentationController.sourceView = _queueAccessoryView ?: self.popupContentView;
+#else
+        clearQueue.popoverPresentationController.sourceView = self.popupContentView;
+#endif
+
+        UIAlertAction *yesAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Clear Queue", @"") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
             [[ZBQueue sharedQueue] clear];
         }];
         [clearQueue addAction:yesAction];
-        
-        UIAlertAction *noAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"No", @"") style:UIAlertActionStyleCancel handler:nil];
+
+        UIAlertAction *noAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:nil];
         [clearQueue addAction:noAction];
-        
+
         [self presentViewController:clearQueue animated:YES completion:nil];
     }
-    
 }
 
 - (void)closeQueue {
     dispatch_async(dispatch_get_main_queue(), ^{
+#ifdef __IPHONE_26_0
+        if (@available(iOS 26, *)) {
+            if (!self->_queueBarVisible) {
+                return;
+            }
+
+            [self setBottomAccessory:nil animated:YES];
+            self->_queueBarVisible = NO;
+            self.popupController = nil;
+            if (self.presentedViewController) {
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
+
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ZBDatabaseCompletedUpdate" object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ZBUpdateNavigationButtons" object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ZBQueueBarHeightDidChange" object:nil];
+        }
+#endif
+
         LNPopupPresentationState state = self.popupPresentationState;
         if (state == LNPopupPresentationStateOpen || state == LNPopupPresentationStateBarPresented) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ZBDatabaseCompletedUpdate" object:nil];

@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)forwardToPackage;
 - (void)updateQueueBarPackageCount:(int)count;
 - (void)closeQueue;
+- (CGFloat)queueBarHeight;
 @end
 
 NS_ASSUME_NONNULL_END

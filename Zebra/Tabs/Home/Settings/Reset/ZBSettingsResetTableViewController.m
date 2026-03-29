@@ -183,7 +183,7 @@
 
 - (void)eraseSourcesAndSettings:(NSIndexPath *)indexPath {
     [self confirmationControllerWithTitle:NSLocalizedString(@"Erase All Sources and Settings", @"") message:NSLocalizedString(@"Are you sure you want to erase all sources and settings? All of your sources will be removed from Zebra and your settings will be reset.", @"") callback:^{
-        [self confirmationControllerWithTitle:NSLocalizedString(@"Are you sure?", @"") message:NSLocalizedString(@"All of your sources will be deleted and be gone forever and Zebra will restart.", @"") callback:^{
+        [self confirmationControllerWithTitle:nil message:NSLocalizedString(@"All of your sources will be deleted and be gone forever and Zebra will restart.", @"") callback:^{
             [self resetAllSettings:NO indexPath:indexPath];
             
             NSError *error = NULL;
