@@ -91,7 +91,7 @@ typedef NS_ENUM(NSUInteger, ZBPackageInfoOrder) {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadDepiction) name:@"darkMode" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configureNavButton) name:@"ZBUpdateNavigationButtons" object:nil];
 
-    self.navigationItem.title = package.name;
+    self.navigationItem.title = @"";
     if (@available(iOS 11, *)) {
         self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     }
