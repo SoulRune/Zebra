@@ -45,7 +45,7 @@ class PackageDepictionViewController: UIViewController {
 		view.distribution = .fill
 		view.axis = .vertical
 		view.addArrangedSubview(webDepictionView)
-		view.addSubview(offlineDepictionView)
+		view.addArrangedSubview(offlineDepictionView)
 		view.addArrangedSubview(expandingView)
 		return view
 	}()
@@ -161,16 +161,13 @@ class PackageDepictionViewController: UIViewController {
 
 	@objc public init(package: Package) {
 		self.package = package
-		depictionDisplay = .web
-		/*
-		if package.nativeDepictionURL() != nil {
-			depictionDisplay = .native
-		} else if package.depictionURL() != nil {
+		// Note: .native case is intentionally skipped — the native depiction loading
+		// code still uses a hardcoded test URL and is not production-ready.
+		if package.depictionURL != nil {
 			depictionDisplay = .web
 		} else {
 			depictionDisplay = .offline
 		}
-		*/
 		super.init(nibName: nil, bundle: nil)
 	}
 
@@ -208,11 +205,13 @@ class PackageDepictionViewController: UIViewController {
 		switch depictionDisplay {
 		case .offline:
 			offlineDepictionView.isHidden = false
+			offlineDepictionStackView.isHidden = false
 			descriptionLabel.text = package.longDescription
 			NSLog("[Zebra] Long Description = \(package.longDescription) Height = \(descriptionLabel.bounds)")
 		case .web:
 			webDepictionView.isHidden = false
 			guard let url = package.depictionURL else {
+				webDepictionView.isHidden = true
 				depictionDisplay = .offline
 				return setDepiction()
 			}

@@ -90,6 +90,9 @@ class PlainsController {
 		config.set(string: SlingshotController.superslingPath, forKey: "Plains::Slingshot")
 		config.set(string: SlingshotController.superslingPath, forKey: "Dir::Bin::dpkg")
 
+		// Store distro root prefix for use by package manager operations
+		config.set(string: rootPrefixURL.path, forKey: "Plains::RootPrefix")
+
 		// Set the primary architecture
 		config.set(string: Device.primaryDebianArchitecture, forKey: "APT::Architecture")
 		config.set(string: Device.primaryDebianArchitecture, forKey: "APT::Architectures::")

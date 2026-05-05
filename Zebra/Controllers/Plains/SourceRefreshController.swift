@@ -515,10 +515,14 @@ class SourceRefreshController: NSObject {
 				self.currentRefreshJobs[group.sourceUUID]?.remove(job)
 
 			case .packages(let kind):
-				// Try next file kind. If we’ve reached the end, the repo is unusable.
+				// Try next file kind. If we've reached the end of compressed formats,
+				// fall back to uncompressed Packages as a last resort.
 				if let index = Self.packagesTypePriority.firstIndex(of: kind)?.advanced(by: 1),
 					 index < Self.packagesTypePriority.endIndex {
 					self.continueJob(group: group, withSourceFile: .packages(kind: Self.packagesTypePriority[index]))
+				} else if kind != .text {
+					// Final fallback: try plain uncompressed Packages file
+					self.continueJob(group: group, withSourceFile: .packages(kind: .text))
 				} else {
 					self.cleanUp(group: group)
 				}
@@ -548,7 +552,7 @@ class SourceRefreshController: NSObject {
 		}
 
 		// Compare old and new Release file to determine if a Packages update is necessary.
-		// Return true if both match.
+		// Return true if both match (unmodified), false if different or unknown (modified).
 		let newRelease = TagFile(url: releaseFile.partialURL)
 		let keys = ["SHA512", "SHA256", "SHA1", "MD5Sum", "Date"]
 		for key in keys {
@@ -557,7 +561,7 @@ class SourceRefreshController: NSObject {
 			if old == nil && new == nil {
 				continue
 			}
-			return old != new
+			return old == new
 		}
 		return false
 	}
