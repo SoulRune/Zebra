@@ -25,6 +25,9 @@ jobs:
         path: theos
         submodules: recursive
 
+    - name: Build libapt
+      run: Vendor/Plains/Vendor/build-libapt.sh
+
     - name: Build Package
       env:
         THEOS: theos
