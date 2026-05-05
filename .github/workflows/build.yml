@@ -16,7 +16,7 @@ jobs:
         token: ${{ secrets.GIT_TOKEN }}
 
     - name: Install Theos Dependencies
-      run: brew install ldid fakeroot make
+      run: brew install ldid fakeroot make cmake gettext gnutls lz4 zstd libgcrypt libgpg-error xxhash
 
     - name: Install Theos
       uses: actions/checkout@v2
