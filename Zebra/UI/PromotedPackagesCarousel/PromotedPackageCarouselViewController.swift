@@ -17,19 +17,27 @@ class PromotedPackagesCarouselViewController: CarouselViewController {
 
 	private var packages = [Package]()
 	private var databaseObserver: NSObjectProtocol?
+	// Set to true on the main thread when PLDatabaseRefreshNotification fires.
+	// updateBannerItems() will not spawn any Tasks until this is true, which
+	// prevents concurrent APT-cache access before PLPackageManager.import() completes.
+	private var isDatabaseLoaded = false
 
 	override init() {
 		super.init()
 		errorText = .localize("Featured Unavailable")
 
-		// Retry banner resolution once the package database is loaded.
+		// Listen for the database-ready notification so we can populate banners
+		// exactly once the APT cache has been fully loaded on the main thread.
 		databaseObserver = NotificationCenter.default.addObserver(
 			forName: PackageManager.databaseDidRefreshNotification,
 			object: nil,
 			queue: .main
 		) { [weak self] _ in
-			guard let self = self, !self.bannerItems.isEmpty else { return }
-			self.updateBannerItems()
+			guard let self = self else { return }
+			self.isDatabaseLoaded = true
+			if !self.bannerItems.isEmpty {
+				self.updateBannerItems()
+			}
 		}
 	}
 
@@ -47,11 +55,14 @@ class PromotedPackagesCarouselViewController: CarouselViewController {
 	private func updateBannerItems() {
 		let bannerItems = self.bannerItems
 
+		// Do not access the APT cache until the database has been fully loaded.
+		// isDatabaseLoaded is set on the main thread by the databaseDidRefreshNotification
+		// observer above, which fires only after PLPackageManager.import() completes.
+		// Accessing PackageManager.shared.packages before that point would race with
+		// the main-thread import call and cause a use-after-free inside pkgDepCache.
+		guard isDatabaseLoaded, !bannerItems.isEmpty else { return }
+
 		Task.detached {
-			// Guard: if the package database hasn't been loaded yet, wait for databaseDidRefreshNotification.
-			guard !PackageManager.shared.packages.isEmpty else {
-				return
-			}
 			let packages = bannerItems.map { PackageManager.shared.package(withIdentifier: $0.package) }
 			let items = zip(bannerItems, packages).compactMap { item, package -> CarouselItem? in
 				guard let package = package else {
