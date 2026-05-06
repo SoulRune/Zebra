@@ -112,7 +112,7 @@ class SourceSectionsViewController: ListCollectionViewController {
 					}
 					return labelA!.localizedStandardCompare(labelB!) == .orderedAscending
 				})
-			let finalSections = [.section(section: nil, count: source.count)] + sections
+			let finalSections: [Value] = [.section(section: nil, count: source.count)] + sections
 
 			await MainActor.run {
 				self.sections = finalSections
