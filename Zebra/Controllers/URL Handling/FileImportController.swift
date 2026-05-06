@@ -76,7 +76,7 @@ class FileImportController {
 	}
 
 	private class func handleSourcesFile(itemProvider: NSItemProvider) async throws {
-		let data = try await withCheckedThrowingContinuation { (result: CheckedContinuation<Data, Error>) in
+		_ = try await withCheckedThrowingContinuation { (result: CheckedContinuation<Data, Error>) in
 			let type = sourcesTypes.first(where: { type in itemProvider.hasRepresentationConforming(toTypeIdentifier: type.identifier) })!
 			itemProvider.loadDataRepresentation(forTypeIdentifier: type.identifier) { data, error in
 				if let error = error {

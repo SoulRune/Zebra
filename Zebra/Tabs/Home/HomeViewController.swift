@@ -95,7 +95,7 @@ class HomeViewController: ListCollectionViewController {
 				}
 				return cell
 
-			case .package(let package):
+				case .package(_):
 				fatalError()
 			}
 		})
@@ -212,7 +212,7 @@ extension HomeViewController {
 		case .featured:
 			break
 
-		case .package(let package):
+		case .package(_):
 			break
 		}
 	}

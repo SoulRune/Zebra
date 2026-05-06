@@ -123,6 +123,13 @@
 		4EE3CC7F283E50B1007D2943 /* SourceFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE3CC7E283E50B1007D2943 /* SourceFile.swift */; };
 		89051722237239A9000F0A32 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8905172123723995000F0A32 /* libc++.tbd */; };
 		8915515C2560A4F0005AF405 /* ZBPartialPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8915515B2560A4F0005AF405 /* ZBPartialPresentationController.m */; };
+		367D80F522C3D1CF00581D60 /* ZBSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 367D80F322C3D1CF00581D60 /* ZBSettingsViewController.m */; };
+		75D0A77F24A014D2007D84EF /* ZBPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 75D0A77E24A014D2007D84EF /* ZBPreferencesViewController.m */; };
+		75823619249E7DCA003713DD /* ZBSettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 75823618249E7DCA003713DD /* ZBSettingsTableViewCell.m */; };
+		8903B866264F7351005B1098 /* ZBAppIconSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8903B865264F7351005B1098 /* ZBAppIconSettingsViewController.m */; };
+		8916AC2723CAAF1A008BA02C /* ZBDisplaySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8916AC2623CAAF1A008BA02C /* ZBDisplaySettingsViewController.m */; };
+		89308E2723FF4BBB00D4641D /* ZBResetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 89308E2623FF4BBB00D4641D /* ZBResetViewController.m */; };
+		895CB40326617D7A0013A21A /* ZBLanguageSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 895CB40226617D7A0013A21A /* ZBLanguageSettingsViewController.m */; };
 		891D1BAD26290FB1006839F7 /* ZBDummySource.m in Sources */ = {isa = PBXBuildFile; fileRef = 891D1BAC26290FB1006839F7 /* ZBDummySource.m */; };
 		8927D52123C29CCA00A7987E /* ZBSourceImportViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8927D52023C29CCA00A7987E /* ZBSourceImportViewController.mm */; };
 		8937495B248603D700CE0520 /* ZBSourceAddViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 89374959248603D700CE0520 /* ZBSourceAddViewController.mm */; };
@@ -1591,6 +1598,13 @@
 				F057924E27D7C37500E9B477 /* PromotedPackagesFetcher.swift in Sources */,
 				4EC7F27F27B275F70078F953 /* String+Localization.swift in Sources */,
 				8915515C2560A4F0005AF405 /* ZBPartialPresentationController.m in Sources */,
+				367D80F522C3D1CF00581D60 /* ZBSettingsViewController.m in Sources */,
+				75D0A77F24A014D2007D84EF /* ZBPreferencesViewController.m in Sources */,
+				75823619249E7DCA003713DD /* ZBSettingsTableViewCell.m in Sources */,
+				8903B866264F7351005B1098 /* ZBAppIconSettingsViewController.m in Sources */,
+				8916AC2723CAAF1A008BA02C /* ZBDisplaySettingsViewController.m in Sources */,
+				89308E2723FF4BBB00D4641D /* ZBResetViewController.m in Sources */,
+				895CB40326617D7A0013A21A /* ZBLanguageSettingsViewController.m in Sources */,
 				4E1A1C9227B7545800B6DC9A /* NSToolbarItem+AppItems.swift in Sources */,
 				4EB23510283DFA3500713CBB /* AppleDecompressor.swift in Sources */,
 				4E090B8028646362001FDE9D /* UIListContentConfiguration+Additions.swift in Sources */,

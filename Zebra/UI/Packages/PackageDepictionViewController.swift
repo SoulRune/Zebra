@@ -207,7 +207,7 @@ class PackageDepictionViewController: UIViewController {
 			offlineDepictionView.isHidden = false
 			offlineDepictionStackView.isHidden = false
 			descriptionLabel.text = package.longDescription
-			NSLog("[Zebra] Long Description = \(package.longDescription) Height = \(descriptionLabel.bounds)")
+			NSLog("[Zebra] Long Description = \(package.longDescription ?? "") Height = \(descriptionLabel.bounds)")
 		case .web:
 			webDepictionView.isHidden = false
 			guard let url = package.depictionURL else {

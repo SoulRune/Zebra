@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Plains
+@preconcurrency import Plains
 
 enum PackageListSwipeActionStyle: Int {
 	case text, icon

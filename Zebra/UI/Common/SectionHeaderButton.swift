@@ -25,9 +25,6 @@ class SectionHeaderButton: UIButton {
 		backgroundColor = normalBackgroundColor
 		clipsToBounds = true
 		layer.cornerCurve = .continuous
-		setTitleColor(tintColor, for: .normal)
-		titleLabel!.font = .preferredFont(forTextStyle: .footnote, weight: .bold)
-		adjustsImageWhenHighlighted = false
 		accessibilityLabel = title
 
 		if let action = action {
@@ -37,16 +34,40 @@ class SectionHeaderButton: UIButton {
 		addTarget(self, action: #selector(didTouchDown), for: [.touchDown, .touchDragEnter])
 		addTarget(self, action: #selector(didTouchUp), for: [.touchUpInside, .touchUpOutside, .touchDragExit, .touchCancel])
 
+		let font = UIFont.preferredFont(forTextStyle: .footnote, weight: .bold)
 		if let image = image {
-			setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: titleLabel!.font.pointSize,
-																																	weight: .bold,
-																																	scale: .medium),
-																			forImageIn: .normal)
-			setImage(image, for: .normal)
+			var config = UIButtonConfiguration.plain()
+			config.background = UIBackgroundConfiguration.clear()
+			config.baseForegroundColor = tintColor
+			config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(
+				pointSize: font.pointSize,
+				weight: .bold,
+				scale: .medium
+			)
+			config.image = image
+			configuration = config
 		} else {
-			setTitle(title.localizedUppercase, for: .normal)
-			setImage(nil, for: .normal)
-			contentEdgeInsets = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+			var config = UIButtonConfiguration.plain()
+			config.background = UIBackgroundConfiguration.clear()
+			config.baseForegroundColor = tintColor
+			config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12)
+			config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+				var outgoing = incoming
+				outgoing.font = font
+				return outgoing
+			}
+			config.title = title.localizedUppercase
+			configuration = config
+		}
+
+		// Prevent content from dimming on highlight and keep background transparent
+		// (visual highlight feedback is provided via backgroundColor changes in didTouchDown/didTouchUp)
+		configurationUpdateHandler = { [weak self] button in
+			if var c = button.configuration {
+				c.background = UIBackgroundConfiguration.clear()
+				c.baseForegroundColor = self?.tintColor
+				button.configuration = c
+			}
 		}
 
 		NSLayoutConstraint.activate([

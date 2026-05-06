@@ -14,7 +14,7 @@ import BackgroundTasks
 import HTTPTypes
 import HTTPTypesFoundation
 
-class SourceRefreshController: NSObject {
+class SourceRefreshController: NSObject, @unchecked Sendable {
 
 	enum Priority {
 		case foreground, background

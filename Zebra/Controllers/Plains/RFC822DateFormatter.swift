@@ -8,7 +8,7 @@
 
 import Foundation
 
-class RFC822DateFormatter: DateFormatter {
+class RFC822DateFormatter: DateFormatter, @unchecked Sendable {
 
 	override init() {
 		super.init()
