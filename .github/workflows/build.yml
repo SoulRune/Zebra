@@ -10,16 +10,21 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         submodules: recursive
         token: ${{ secrets.GIT_TOKEN }}
 
     - name: Install Theos Dependencies
-      run: brew install ldid make cmake gettext gnutls lz4 zstd libgcrypt libgpg-error xxhash
+      run: brew install make cmake gettext gnutls lz4 zstd libgcrypt libgpg-error xxhash
+
+    - name: Install ldid
+      run: |
+        curl -Lo /usr/local/bin/ldid https://github.com/ProcursusTeam/ldid/releases/latest/download/ldid_macosx_arm64
+        chmod +x /usr/local/bin/ldid
 
     - name: Install Theos
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         repository: theos/theos
         path: theos
@@ -33,3 +38,10 @@ jobs:
         THEOS: theos
         FAKEROOT: sudo
       run: gmake package
+
+    - name: Upload Package
+      uses: actions/upload-artifact@v4
+      with:
+        name: Zebra.deb
+        path: packages/*.deb
+        if-no-files-found: error
