@@ -101,24 +101,21 @@ class SourceSectionsViewController: ListCollectionViewController {
 	}
 
 	private func setupSections() {
-		Task<Void, Never>.detached {
-			let source: SectionCountProviding = await MainActor.run { self.source ?? PackageManager.shared }
-			let sections = source.sections
-				.map { key, value in Value.section(section: key, count: value.uintValue) }
-				.sorted(by: { a, b in
-					guard case .section(let labelA, _) = a,
-								case .section(let labelB, _) = b else {
-						return false
-					}
-					return labelA!.localizedStandardCompare(labelB!) == .orderedAscending
-				})
-			let finalSections: [Value] = [.section(section: nil, count: source.count)] + sections
-
-			await MainActor.run {
-				self.sections = finalSections
-				self.updateDataSource()
-			}
+		let source: any SectionCountProviding
+		if let s = self.source {
+			source = s
+		} else {
+			source = PackageManager.shared
 		}
+		let sorted = source.sections
+			.map { key, value in Value.section(section: key, count: value.uintValue) }
+			.sorted { a, b in
+				guard case .section(let labelA, _) = a,
+							case .section(let labelB, _) = b else { return false }
+				return labelA!.localizedStandardCompare(labelB!) == .orderedAscending
+			}
+		self.sections = [.section(section: nil, count: source.count)] + sorted
+		updateDataSource()
 	}
 
 	private func updateDataSource() {
