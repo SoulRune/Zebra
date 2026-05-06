@@ -101,8 +101,8 @@ class SourceSectionsViewController: ListCollectionViewController {
 	}
 
 	private func setupSections() {
+		let source: SectionCountProviding = self.source ?? PackageManager.shared
 		Task.detached {
-			let source: SectionCountProviding = await MainActor.run { self.source ?? PackageManager.shared }
 			let sections = (source.sections as! [String: UInt])
 				.map { key, value in Value.section(section: key, count: value) }
 				.sorted(by: { a, b in
