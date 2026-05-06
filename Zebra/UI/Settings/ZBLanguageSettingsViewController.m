@@ -8,6 +8,7 @@
 
 #import "ZBLanguageSettingsViewController.h"
 
+#import "ZBSettings.h"
 #import "Zebra-Swift.h"
 
 #import <SafariServices/SafariServices.h>

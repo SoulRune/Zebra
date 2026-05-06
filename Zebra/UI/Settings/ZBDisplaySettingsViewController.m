@@ -8,6 +8,7 @@
 
 #import "ZBDisplaySettingsViewController.h"
 
+#import "ZBSettings.h"
 #import "Zebra-Swift.h"
 #import "UIImageView+Zebra.h"
 
@@ -39,8 +40,6 @@
         }
         
         NSMutableArray *tempImages = [NSMutableArray new];
-			UITraitCollection *lightTraitCollection = [UITraitCollection traitCollectionWithUserInterfaceStyle:UIUserInterfaceStyleLight];
-			UITraitCollection *darkTraitCollection = [UITraitCollection traitCollectionWithUserInterfaceStyle:UIUserInterfaceStyleLight];
         for (ZBAccentColor color = ZBAccentColorAquaVelvet; color <= ZBAccentColorStorm; color++) {
 //            UIColor *leftColor = [UIColor getAccentColor:color forInterfaceStyle:UIUserInterfaceStyleLight];
 //            UIColor *rightColor = [UIColor getAccentColor:color forInterfaceStyle:UIUserInterfaceStyleDark];

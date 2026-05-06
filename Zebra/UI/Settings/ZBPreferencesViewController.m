@@ -147,14 +147,14 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (section < self.headers.count && ![self.headers[section] isEqualToString:@""]) {
+    if (section >= 0 && (NSUInteger)section < self.headers.count && ![self.headers[section] isEqualToString:@""]) {
         return self.headers[section];
     }
     return NULL;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-    if (section < self.footers.count && ![self.footers[section] isEqualToString:@""]) {
+    if (section >= 0 && (NSUInteger)section < self.footers.count && ![self.footers[section] isEqualToString:@""]) {
         return self.footers[section];
     }
     return NULL;
