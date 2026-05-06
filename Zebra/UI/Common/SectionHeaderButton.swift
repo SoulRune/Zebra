@@ -36,8 +36,7 @@ class SectionHeaderButton: UIButton {
 
 		let font = UIFont.preferredFont(forTextStyle: .footnote, weight: .bold)
 		if let image = image {
-			var config = UIButtonConfiguration.plain()
-			config.background = UIBackgroundConfiguration.clear()
+			var config = UIButton.Configuration.plain()
 			config.baseForegroundColor = tintColor
 			config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(
 				pointSize: font.pointSize,
@@ -47,27 +46,21 @@ class SectionHeaderButton: UIButton {
 			config.image = image
 			configuration = config
 		} else {
-			var config = UIButtonConfiguration.plain()
-			config.background = UIBackgroundConfiguration.clear()
+			var titleAttribute = AttributeContainer()
+			titleAttribute.font = font
+			var config = UIButton.Configuration.plain()
 			config.baseForegroundColor = tintColor
 			config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12)
-			config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-				var outgoing = incoming
-				outgoing.font = font
-				return outgoing
-			}
-			config.title = title.localizedUppercase
+			config.attributedTitle = AttributedString(title.localizedUppercase, attributes: titleAttribute)
 			configuration = config
 		}
 
-		// Prevent content from dimming on highlight and keep background transparent
-		// (visual highlight feedback is provided via backgroundColor changes in didTouchDown/didTouchUp)
+		// Background changes are handled via didTouchDown/didTouchUp;
+		// the configuration update handler keeps the foreground colour in sync with tintColor.
 		configurationUpdateHandler = { [weak self] button in
-			if var c = button.configuration {
-				c.background = UIBackgroundConfiguration.clear()
-				c.baseForegroundColor = self?.tintColor
-				button.configuration = c
-			}
+			var c = button.configuration ?? UIButton.Configuration.plain()
+			c.baseForegroundColor = self?.tintColor
+			button.configuration = c
 		}
 
 		NSLayoutConstraint.activate([
@@ -106,8 +99,7 @@ class SectionHeaderButton: UIButton {
 
 	override func tintColorDidChange() {
 		super.tintColorDidChange()
-
-		setTitleColor(tintColor, for: .normal)
+		setNeedsUpdateConfiguration()
 	}
 
 }
