@@ -183,7 +183,7 @@ enum Architecture: String {
 
 	var isPortable: Bool {
 		switch userInterfaceIdiom {
-		case .phone, .pad, .carPlay, .reality, .unspecified:
+		case .phone, .pad, .carPlay, .vision, .unspecified:
 			return true
 		case .tv:
 			return false
@@ -210,7 +210,7 @@ enum Architecture: String {
 		case .tv:          return "appletv.fill"
 		case .mac:         return isPortable ? "laptopcomputer" : "desktopcomputer"
 		// TODO: Update when they decide to add an icon for it
-		case .reality:     return "eyeglasses"
+		case .vision:      return "eyeglasses"
 		case .carPlay:     return "car.fill"
 		case .unspecified: return "questionmark.app.dashed"
 		@unknown default:  return "questionmark.app.dashed"
