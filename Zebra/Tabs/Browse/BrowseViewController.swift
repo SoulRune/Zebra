@@ -25,6 +25,7 @@ class BrowseViewController: ListCollectionViewController {
 	private var newsItems: [CarouselItem]? {
 		didSet { carouselViewController?.items = newsItems ?? [] }
 	}
+	private var newsError = false
 
 	private var dataSource: UICollectionViewDiffableDataSource<Section, Value>!
 	private var preloadTasks = [IndexPath: KingfisherTask]()
@@ -67,6 +68,10 @@ class BrowseViewController: ListCollectionViewController {
 				let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CarouselCell", for: indexPath) as! CarouselCollectionViewContainingCell
 				cell.parentViewController = self
 				cell.items = self.newsItems ?? []
+				if self.newsError && (self.newsItems == nil || self.newsItems!.isEmpty) {
+					cell.viewController.isLoading = false
+					cell.viewController.isError = true
+				}
 				return cell
 
 			case .source(let source):
@@ -225,12 +230,17 @@ class BrowseViewController: ListCollectionViewController {
 
 				let newsItems = try await RedditNewsFetcher.fetch()
 				await MainActor.run {
+					self.newsError = false
 					self.newsItems = newsItems
 				}
 			} catch {
 				Logger().warning("Loading news failed: \(String(describing: error))")
 				await MainActor.run {
-					self.carouselViewController?.isError = true
+					self.newsError = true
+					if self.newsItems == nil || self.newsItems!.isEmpty {
+						self.carouselViewController?.isLoading = false
+						self.carouselViewController?.isError = true
+					}
 				}
 			}
 		}

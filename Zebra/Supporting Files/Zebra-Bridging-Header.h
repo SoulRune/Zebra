@@ -13,6 +13,7 @@
 #import "ZBSourceAddViewController.h"
 #import "ZBWorkspace.h"
 #import "ZBPackageActions.h"
+#import "ZBSettingsViewController.h"
 
 @interface UIApplication ()
 - (void)suspend;

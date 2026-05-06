@@ -44,9 +44,14 @@ class PromotedPackagesCarouselViewController: CarouselViewController {
 			}
 
 			await MainActor.run {
-				if items.isEmpty && !self.isLoading {
-					self.errorText = .localize("No Featured Packages")
-					self.isError = true
+				if items.isEmpty {
+					// Always stop the spinner when we have a definitive empty result.
+					self.isLoading = false
+					if !bannerItems.isEmpty {
+						// Had banners but none matched known packages.
+						self.errorText = .localize("No Featured Packages")
+						self.isError = true
+					}
 				}
 				self.packages = packages.compact()
 				self.items = items
