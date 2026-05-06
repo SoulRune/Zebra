@@ -135,7 +135,7 @@ class Command {
 		}
 
 		// Convert our environment array from NSStrings to char pointers
-		let envp = arguments.cStringArray
+		let envp = environment.cStringArray
 
 		// Create our file actions to read data back from posix_spawn
 		var actions: posix_spawn_file_actions_t!

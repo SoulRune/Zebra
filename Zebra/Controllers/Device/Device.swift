@@ -80,9 +80,13 @@ class Device: NSObject {
 				.trimmingCharacters(in: .whitespacesAndNewlines)
 			let foreignArchs = try? Command.executeSync(dpkgPath, arguments: ["--print-foreign-architectures"])?
 				.trimmingCharacters(in: .whitespacesAndNewlines)
-			return "\(primaryArch ?? "")\n\(foreignArchs ?? "")"
+			let result = "\(primaryArch ?? "")\n\(foreignArchs ?? "")"
 				.split(separator: "\n", omittingEmptySubsequences: true)
 				.map(String.init(_:))
+			if !result.isEmpty {
+				return result
+			}
+			// dpkg failed to report an architecture — fall through to best-guess.
 		}
 
 		// Fall back to making our best guess.
@@ -98,7 +102,7 @@ class Device: NSObject {
 		#endif
 	}()
 
-	@objc static var primaryDebianArchitecture: String { architectures.first! }
+	@objc static var primaryDebianArchitecture: String { architectures.first ?? "iphoneos-arm64" }
 
 	// MARK: - Distro/Jailbreak
 
