@@ -118,7 +118,8 @@ extension UIColor {
 
 extension UIColor {
 
-	static var accent: UIColor? { Preferences.accentColor.uiColor }
+	@objc static var accentColor: UIColor? { Preferences.accentColor.uiColor }
+	static var accent: UIColor? { accentColor }
 
 	func accentColor(_ accentColor: AccentColor, forUserInterfaceStyle userInterfaceStyle: UIUserInterfaceStyle) -> UIColor? {
 		let traitCollection = UITraitCollection(userInterfaceStyle: userInterfaceStyle)
