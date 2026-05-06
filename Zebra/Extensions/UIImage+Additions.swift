@@ -85,3 +85,13 @@ extension UIImage.SymbolConfiguration {
 	func withHierarchicalColor(_ hierarchicalColor: UIColor) -> Self { Self(hierarchicalColor: hierarchicalColor).applying(self) }
 
 }
+
+extension UIImageView {
+
+	/// Clears the Kingfisher in-memory and disk caches. Callable from Objective-C.
+	@objc static func clearKingfisherCache() {
+		ImageCache.default.clearMemoryCache()
+		ImageCache.default.clearDiskCache()
+	}
+
+}

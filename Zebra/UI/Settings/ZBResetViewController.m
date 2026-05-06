@@ -6,8 +6,6 @@
 //  Copyright © 2020 Wilson Styres. All rights reserved.
 //
 
-@import SDWebImage;
-
 #import "ZBResetViewController.h"
 
 #import "Zebra-Swift.h"
@@ -93,8 +91,7 @@
 }
 
 - (void)resetImageCache {
-    [[SDImageCache sharedImageCache] clearMemory];
-    [[SDImageCache sharedImageCache] clearDiskOnCompletion:nil];
+    [UIImageView clearKingfisherCache];
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Image Cache Cleared", @"") message:NULL preferredStyle:UIAlertControllerStyleAlert];
     
