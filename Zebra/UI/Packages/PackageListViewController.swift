@@ -243,6 +243,7 @@ class PackageListViewController: ListCollectionViewController {
 
 		isLoading = true
 
+		let hiddenPackages = Self.superHiddenPackages
 		Task.detached(priority: .userInitiated) {
 			let packages: [Package]
 
@@ -250,7 +251,7 @@ class PackageListViewController: ListCollectionViewController {
 			var filteredCount = 0
 			let alwaysFilter: (Package) -> Bool = { package in
 				package.role.rawValue < PackageRole.cydia.rawValue &&
-					!Self.superHiddenPackages.contains(package.identifier)
+					!hiddenPackages.contains(package.identifier)
 			}
 			let roleFilter: (Package) -> Bool = { package in
 				if !alwaysFilter(package) {

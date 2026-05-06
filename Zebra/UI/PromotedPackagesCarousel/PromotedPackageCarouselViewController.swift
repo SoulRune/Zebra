@@ -16,10 +16,27 @@ class PromotedPackagesCarouselViewController: CarouselViewController {
 	}
 
 	private var packages = [Package]()
+	private var databaseObserver: NSObjectProtocol?
 
 	override init() {
 		super.init()
 		errorText = .localize("Featured Unavailable")
+
+		// Retry banner resolution once the package database is loaded.
+		databaseObserver = NotificationCenter.default.addObserver(
+			forName: PackageManager.databaseDidRefreshNotification,
+			object: nil,
+			queue: .main
+		) { [weak self] _ in
+			guard let self = self, !self.bannerItems.isEmpty else { return }
+			self.updateBannerItems()
+		}
+	}
+
+	deinit {
+		if let observer = databaseObserver {
+			NotificationCenter.default.removeObserver(observer)
+		}
 	}
 
 	@available(*, unavailable)
@@ -31,6 +48,10 @@ class PromotedPackagesCarouselViewController: CarouselViewController {
 		let bannerItems = self.bannerItems
 
 		Task.detached {
+			// Guard: if the package database hasn't been loaded yet, wait for databaseDidRefreshNotification.
+			guard !PackageManager.shared.packages.isEmpty else {
+				return
+			}
 			let packages = bannerItems.map { PackageManager.shared.package(withIdentifier: $0.package) }
 			let items = zip(bannerItems, packages).compactMap { item, package -> CarouselItem? in
 				guard let package = package else {
