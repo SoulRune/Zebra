@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-13
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
       with:
@@ -16,7 +16,7 @@ jobs:
         token: ${{ secrets.GIT_TOKEN }}
 
     - name: Install Theos Dependencies
-      run: brew install ldid fakeroot make cmake gettext gnutls lz4 zstd libgcrypt libgpg-error xxhash
+      run: brew install ldid make cmake gettext gnutls lz4 zstd libgcrypt libgpg-error xxhash
 
     - name: Install Theos
       uses: actions/checkout@v2
@@ -31,4 +31,5 @@ jobs:
     - name: Build Package
       env:
         THEOS: theos
+        FAKEROOT: sudo
       run: gmake package
